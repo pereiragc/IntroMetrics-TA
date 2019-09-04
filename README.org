@@ -1,0 +1,22 @@
+
+* Intro to Econometrics: TA repo
+  Welcome! This repository was created to store and maintain the materials
+  used or referred to in the recitations. 
+  
+  Schedule: 
+  |              | what           |        when | where                       |
+  |--------------+----------------+-------------+-----------------------------|
+  | /FIRST HALF/ |                |             |                             |
+  |              | *Recitation*   | 13:10-14:25 | 227 Seeley W. Mudd building |
+  |              | *Office hours* |  08:30-9:30 | TBA                         |
+  
+  You can find lectures, slides and problem sets in the [[https://jm4474.github.io/Courses-IntroEconometrics-Ph.D/][class page]]. 
+
+  Pull requests are encouraged!
+  
+** Questions outside OH
+   See [[outside_oh_questions.md][here]]!
+
+      
+
+   
