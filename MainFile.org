@@ -323,4 +323,4 @@
 
 * Footnotes
 
-[fn:1]  The sets in $\mathcal A$ are called co-finite sets.
+[fn:1]  The sets whose complement is finite are called co-finite sets.
