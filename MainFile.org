@@ -12,10 +12,10 @@
    used or referred to in the recitations. 
   
    Schedule: 
-   | what           |        when | where                       |
-   |----------------+-------------+-----------------------------|
-   | *Recitation*   | 13:10-14:25 | 227 Seeley W. Mudd building |
-   | *Office hours* |  08:30-9:30 | TBA                         |
+   | what           |        when | where                           |
+   |----------------+-------------+---------------------------------|
+   | *Recitation*   | 13:10-14:25 | 227 Seeley W. Mudd building     |
+   | *Office hours* | 09:00-10:00 | Lehman Library group study area |
   
    You can find lectures, slides and problem sets in the [[https://jm4474.github.io/Courses-IntroEconometrics-Ph.D/][class page]]. 
 
