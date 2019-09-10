@@ -245,7 +245,7 @@
    
    Here I store some random notes that I may or may note talk about during recitations.
    
-*** Lecture 1
+*** Lectures 1 & 2
     - _Finite additivity_
 
       Let's define some notation. I can define the following for any indexed collection of sets $A_i$:
