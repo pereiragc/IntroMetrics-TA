@@ -1,0 +1,321 @@
+#+TITLE: Fall 19: Intro to Econometrics TA material  
+#+AUTHOR: Gustavo Pereira
+
+
+* README page
+  :PROPERTIES: 
+  :EXPORT_FILE_NAME: README.org
+  :EXPORT_TITLE: 
+  :END:
+** Intro to Econometrics: TA repo
+   Welcome! This repository was created to store and maintain the materials
+   used or referred to in the recitations. 
+  
+   Schedule: 
+   | what           |        when | where                       |
+   |----------------+-------------+-----------------------------|
+   | *Recitation*   | 13:10-14:25 | 227 Seeley W. Mudd building |
+   | *Office hours* |  08:30-9:30 | TBA                         |
+  
+   You can find lectures, slides and problem sets in the [[https://jm4474.github.io/Courses-IntroEconometrics-Ph.D/][class page]]. 
+
+   Pull requests are encouraged!
+  
+*** Questions outside OH
+    See [[outside_oh_questions.pdf][here]]!
+
+      
+
+   
+
+* Questions outside office hours
+  :PROPERTIES: 
+  :EXPORT_FILE_NAME: outside_oh_questions.pdf
+  :EXPORT_TITLE: Out-of-OH Q&A   
+  :EXPORT_AUTHOR: Gustavo Pereira
+  :EXPORT_OPTIONS: ^:nil
+  :END: 
+** Why
+   The ideal time to ask questions about the material and problem sets is during
+   office hours. However, many of you can't make it to office hours for valid
+   reasons, so I also try to respond to questions sent by e-mail or other
+   means.
+
+   Keeping this document helps you (and yours truly) for a few reasons: 
+   - More clarifications/explanations available
+   - There is no `unfair advantage' to those who ask many questions
+   - I don't have to answer the same thing over and over :)
+
+     #+LATEX: \clearpage
+** Pset 1
+    
+*** About limits of sets, and Durrett and Billingsley being wrong
+    #+begin_quote
+    ``Hi Gustavo,
+     
+    Thank you for the class today. Can I further clarify Q4 you briefly
+    discussed in class? I initially directly used $\lim(-\infty,x) \to \Omega$ in
+    the steps, but you pointed out it was wrong. I'm actually still a bit
+    confused about why it is wrong. I referred to *Durrett* (who directly used
+    $\lim(-\infty,x) \to \Omega$) and *Billingsley* (who states "clearly"). So,
+    unfortunately, they both would get the proof wrong. Would it be possible
+    for you to give me some hints on which theorems would be useful in the
+    proof? Thank you so much!
+    
+    [screenshot of Durrett's book, theorem 1.1]
+     
+    Best,
+    
+    xx''
+    
+    (I kept the bold face from the e-mail)
+    #+end_quote
+
+    Dear xx, 
+    
+    I wouldn't dare to say that Durrett would get it wrong if he was responding
+    to the problem set! But definitely, if he just copied and pasted from his
+    own book, he would be discounted.
+    
+    Here's the reason: earlier in the book, he states the continuity from above
+    and below of probability measures in terms of collections of sets /indexed
+    by natural numbers/. In order to do that, he defines what it means to say
+    \[  A_i \uparrow A \]
+    for that class of collections.
+    
+    Later, in the context of proving the limits of CDFs, he applies a
+    similar statement to the collection $\{ (-\infty, x] \}_{x\in \mathbf R}$.
+    The problem is that it's not indexed by natural numbers. So if he wanted
+    full credit, he'd need to clarify he meant by
+    \[ (-\infty, x] \uparrow \mathbf R \]
+    and why continuity of $\mathbf P$ -- defined only for limits of
+    ``increasing'' sets indexed by natural numbers -- also applies for these
+    limits.
+
+    
+    The hint is the same one I gave in the recitation. Use the fact (no need to
+    prove it) that
+    \[ \lim_{x\to\infty} F(x) = 1 \]
+    if, and only if, for every /increasing/ diverging sequence $x_n \uparrow \infty$, 
+    \[  F(x_n) \to 1 \] 
+    and try to apply countable additivity.
+    
+
+    Sincerely, 
+    
+    Gustavo
+
+* Notes
+** Recitation 1
+   :PROPERTIES: 
+   :EXPORT_FILE_NAME: notes/Recitation1.pdf
+   :EXPORT_TITLE: Recitation 1
+   :EXPORT_OPTIONS: toc:nil
+   :EXPORT_LATEX_OPTIONS: \input{auxfiles/header_basic.tex}
+   :END: 
+
+   In this recitation, I review the material presented in lectures 1 and 2. I
+   also cover some things that might be challenging in the first problem sets. 
+   
+*** Review: lectures 1 and 2
+    - Definition of probability space: $(\Omega, \mathcal F, \mathbf P:\mathcal F \to [0,1])$
+      - The point of $(\Omega, \mathcal F)$ is to provide a model for the
+        /randomness of some outcome/.
+      - Remember: we don't observe randomness. We observe some outcome. Then, we
+        use a model to infer what are more or less likely ``states of the world'',
+        because that allows us to predict things
+      - The reason we keep $\Omega$ abstract (instead of focusing on say
+        $\Omega=[0,1]$) is that it allows us to deal with a variety of possible
+        structures for the outcome space!
+    - Random variables: /measurable/ functions $X:\Omega \to S$ where $S$ is some
+      space of outcomes.
+    - Probability space induced by a random variable
+      - Original space: $(\Omega, \mathcal F, \mathbf P)$
+      - RV `measurably' maps original space to $(S, \mathcal S)$
+      - Induced measure: $\mathbf P_X(F) = \mathbf P\left\{ \omega: X(\omega) \in F \right\}$ for $F \in \mathcal S$
+        - Curiosity: this is called a push-forward measure in mesasure theory
+      - Probability space $(S, \mathcal S, \mathbf P_X)$ is typically some
+        Euclidean space (though it can be more complicated)
+    - Let's now focus on the case when $X:\Omega \to S$ is real valued, ie, $S=\mathbf R$.
+    - CDF of a random variable: $F_X(x) = \mathbf P\left\{ \omega: X(\omega) \leq x \right\} = \mathbf P_X((-\infty, x])$
+      - Result: all information in $\mathbf P_X$ is in $F_X$ and vice-versa.
+      - Properties of CDF
+        1. $F_X$ is non-decreasing
+        2. $\lim_{x\to\infty} F_X(x) = 1$
+        3. $\lim_{x\to-\infty} F_X(x) = 0$
+        4. $F_X$ is right continuous
+      - *First main result*: every function $F$ satisfying all four properties
+        above is the CDF of some random variable.
+    - Absolutely continuous random variable: $\exists f_X$ such that
+      \[ F_X(x) = \int_{-\infty}^x f_X(z) dz \]
+      + Weirdly enough, the non-obvious thing about the statement above is not
+        the $\exists f_X$ but the $dz$. 
+      + Measure theoretic details aside, the important thing is that $dz$ is
+        never a jump.
+        + If $X$ has a mass at some point $x_0$ in the real line -- meaning that
+          the $\mathbf P_X(\{x_0\}) > 0$, there will be a jump in $F_X$ at $x_0$. 
+        + We can't have that becasuse $F_X(x_0) - F_X(x_0 - \epsilon) \approx f_X(x_0)\epsilon$
+        + For $\epsilon > 0$ small enough, mass at $x_0$ would imply the LHS is
+          $\mathbf P\{x_0\}$ while the RHS should be zero
+      + Optional comment: in fact every $F_X$ has an associated $f_X$ with
+        respect to /some/ (generally non-uniform) measure. This is the
+        consequence of a more general result called the /Radon-Nikodym theorem/.
+    - Expectation of absolutely continuous RV: 
+      \[ \mathbf E[g(X)] = \int_{\mathbf R} g(z) f_X(z) dz  \]
+      + ``Law of the unconscious statistician''
+    - Moment generating function
+      \[ m_X(t) = \mathbf E\left[ e^{tX}\right]=\int_{\mathbf R} e^{tx} f_X(x)dx\]
+      + The i-th moment of $X$ can be found by taking the $i-th$ derivative of
+        $m_X(t)$ and evaluating it at zero.
+        + For this to be meaningful, the MGF must be well defined in $(-\epsilon, \epsilon)$ for some $\epsilon$
+        + Then for example $m_X'(t) = \mathbf E[X e^{tX}]$
+    - *Second main result.* Let $X_1$ and $X_2$ be st 
+      \[ m_{X_1}(t) = m_{X_2}(t) \]
+      for all $t$. Then $F_{X_1} = F_{X_2}$.  
+      + This essentially means that all information contained in $F_X$ is also
+        contained in $m_X(t)$
+    - Note: take the Taylor series of exponential around $0$ and take
+      expectations,
+      \[m_X(t) = \sum_{n=0}^\infty \frac{t^n \mathbf E(X^n)}{n!}\]
+      + It is tempting to that knowledge of moments determines the distribution
+        of $X$. This is not the case, however, because sometimes the series
+        above doesn't converge even when all moments exist. 
+        
+    # Examples. 
+    # 1) $\Omega = \{1,2,3\}, S=\{a,b,c\}$.
+
+    #    What is the measurability requirement doing? Suppose we have
+    #    $\sigma-\text{algebras}$ $\mathcal F=\{\emptyset, \{1\}, \{2,3\}, \Omega\}$ and $\mathcal S = 2^S$.
+       
+    #    Because neither $2$ nor $3$ show up separately in $\mathcal F$, observing
+    #    a random variable $X:\Omega\to S$ should not allow us to distinguish them.
+
+    #    For example, a random variable such as
+    #    \[X(1) = a, X(2) = b, X(3)=c\]
+    #    would allow us to distinguish $2$ and $3$! Indeed, if $2$ is observed, we
+    #    know for sure that $\omega=2$, but $\{2\}$ isn't in $\mathcal F$.
+       
+    #    In a sense, the measurability requirement is imposing consistency in what
+    #    we can learn about the underlying state based on observing an outcome.
+    #    In the above example, measurability implies that $X(2) = X(3)$.
+       
+    # 2) Take $\Omega$ to be the $[0,1]$ interval with the uniform probability $\lambda$, ie, 
+    #    \[ \lambda( [a,b] )  = b - a \]
+    #    for all intervals $[a,b]$.  
+
+*** Problem 4 is not as easy as it might seem
+    
+    Consider the proof, for example, that $F_X \to 1$ as $x\to\infty$. (The case
+    of $x\to0$ is similar.)
+    
+    We know that: 
+    1) $F(x) = \mathbf P\{\omega: X(\omega) \leq x \}$
+    2) $\{\omega: X(\omega) \leq x\} \uparrow \Omega$
+    3) $\mathbf P(\Omega) = 1$
+       
+    So it must be the case that $F(x) = P\{\omega: X(\omega) \leq x\} \uparrow \mathbf P(\Omega) = 1$,
+    isn't that right? Well, *no*. While that reasoning is in some sense in the
+    right direction, at the very least it's an incomplete argument for two reasons.
+    
+    - We haven't defined convergence of sets as in (2). Unless you can make that
+      statement rigorous somehow, using it is not fair game. 
+    - More importantly, when we took the statements together, we missed an
+      important step: proving that (whatever the first arrow means)
+      \[ A_x \uparrow \Omega \implies \mathbf P(A_x) \uparrow \mathbf P(\Omega) \]
+    
+    The second step above is essentially the point of the exercise. Hint for
+    actually solving the problem:
+    - Use the fact that 
+      \[ \lim_{x\to\infty} F(x) = L\] 
+      if, and only if $F(x_n) \to L$ for all increasing sequences $x_n \to \infty$
+    - Show that for any probability measure, if $x_n \uparrow \infty$
+      \[ \mathbf P\{ \omega: X(\omega) \leq x_n \} \to \mathbf P(\Omega) = 1 \] 
+      
+      You will need to use /countable/ additivity for this.
+      
+    For the right-continuity part, one useful way of checking your proof is to
+    make sure you understand why your proof doesn't apply to the left limit. 
+      
+** Unsorted
+   :PROPERTIES: 
+   :EXPORT_FILE_NAME: notes/unsorted-notes.pdf
+   :EXPORT_TITLE: Unsorted notes
+   :EXPORT_OPTIONS: toc:nil
+   :END: 
+   
+   Here I store some random notes that I may or may note talk about during recitations.
+   
+*** Lecture 1
+    - _Finite additivity_
+
+      Let's define some notation. I can define the following for any indexed collection of sets $A_i$:
+      \[A_1 + A_2 := A_1 \cup  A_2\]
+      or, more generally
+      \[
+      \sum_i A_i := \bigcup_i A_i
+      \]
+      whenever the collection $A_i$ is pairwise disjoint.
+
+      The idea of assuming additivity -- without any further qualification --
+      is that set-function $\mathbf P$ satisfies some form of linearity, that is
+      \[
+      \mathbf P\left(   \sum A_i  \right) = \sum_i \mathbf P \left(  A_i \right)
+      \]
+      It turns out that the set of indices over which this assumption is made is
+      consequential.
+
+      We call $\mathbf P$ /finitely additive/ if the above is required to hold
+      for all finite sets of indices. Similarly, if the relationship holds for
+      countably many indices, $\mathbf P$ is called /countably additive/.
+      
+      Let's investigate an example of finitely, but not countably, additive
+      measure. Here, we are working with a triple $(X, \mathcal A, \mathbf P)$.
+      $\mathcal A$ is an /algebra/ of sets. Very similar to the usual
+      $\sigma-\text{algebra}$ couterpart, but we don't require the assumptions
+      of closedness under unions and intersections to hold for infinitely many
+      set, only finitely many.
+
+      We will work with the following algebra, which is not a
+      $\sigma\text{-algebra}$. Let $X$ be the set of all natural numbers,
+      $\mathbf N$. Define also 
+      \[
+      \mathcal A = \left\{ A \subset \mathbf N: A\text{ is finite or } A^c \text{ is finite} \right\}
+      \]
+      
+      Example of sets in $\mathcal A$: $\{1, 2, 3\}$ and $\{5001,
+      5002,\ldots\}$. Example of a sets /not/ in $\mathcal A$: the set of all
+      odd/even/prime numbers.[fn:1] 
+      
+      It's not hard to see that this is satisfies: $\emptyset \in \mathcal A$
+      (since $\emptyset$ is finite) and closedness under intersections/unions.
+      The reason why $\mathcal A$ is not a $\sigma\text{-algebra}$ is that each
+      $A_i = \{1, 3, \ldots, 2i + 1\}$ is in $\mathcal A$, but its infinite
+      union, the set of all odd numbers, is not.
+      
+      Now consider the probability measure: $\mathbf P:\mathcal A \to [0,1]$: 
+      \[ \mathbf P(A) = 
+      \begin{cases} 1 &\text{if } A\text{ is infinite}  \\ 0 &\text{ otherwise} \end{cases} \]
+      Thus, for example, $\mathbf P({1,2,3}) = 0$ and $P(\{1023, 1024, \ldots\}) = 1$.
+      
+      Such $\mathbf P$ trivially satisfies $\mathbf P(A + A') = \mathbf P(A) + \mathbf P(A')$ because
+      the finite union of finite sets is finite.
+      
+      This probability measure is interesting because it provides a
+      counter-example to continuity when $\mathbf P$ is only finitely, but not
+      countably, additive.
+      
+      For example, it holds that $\{1,2,\ldots, n\} \uparrow \mathbf N$, but 
+       \[\begin{aligned} 1 = \mathbf P(\mathbf N) &= \mathbf P\left( \bigcup_n \left\{ 1,2,\ldots, n \right\} \right)
+       &\ne \lim_n \mathbf P\left( \left\{ 1,2,\ldots, n\right\} \right)  = 0
+       \end{aligned}\]
+       
+       Moreover, $\{n+1, n+2, \ldots\} \downarrow \emptyset$, but 
+       \[ 0 = \mathbf P(\emptyset) = \mathbf P\left( \bigcap_n \{n+1, n+2, \ldots\} \right) \ne
+            \lim_n \mathbf P\left( \{n+1, n+2, \ldots \} \right) = 1 \]
+        
+      
+       
+
+* Footnotes
+
+[fn:1]  The sets in $\mathcal A$ are called co-finite sets.
