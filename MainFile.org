@@ -312,7 +312,12 @@
        Moreover, $\{n+1, n+2, \ldots\} \downarrow \emptyset$, but 
        \[ 0 = \mathbf P(\emptyset) = \mathbf P\left( \bigcap_n \{n+1, n+2, \ldots\} \right) \ne
             \lim_n \mathbf P\left( \{n+1, n+2, \ldots \} \right) = 1 \]
-        
+            
+       The CDF of the random variable $X:\mathbf N \to \mathbf N$, $X(n) = n$
+       according to $\mathbf P$ will satisfy:
+       \[ F_X(k) = \mathbf P\{n: X(n) \leq k\}=  0\]
+       for all $n$, so $\lim F_X(k) = 0$ for $k\to\infty$. 
+       
       
        
 
