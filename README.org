@@ -1,4 +1,4 @@
-# Created 2019-09-10 Tue 11:07
+# Created 2019-09-14 Sat 19:39
 #+TITLE: 
 #+AUTHOR: Gustavo Pereira
 * Intro to Econometrics: TA repo
@@ -6,10 +6,10 @@ Welcome! This repository was created to store and maintain the materials
 used or referred to in the recitations. 
 
 Schedule: 
-| what           |        when | where                           |
-|----------------+-------------+---------------------------------|
-| *Recitation*   | 13:10-14:25 | 227 Seeley W. Mudd building     |
-| *Office hours* | 09:00-10:00 | Lehman Library group study area |
+| what           | when                | where                           |
+|----------------+---------------------+---------------------------------|
+| *Recitation*   | Monday 13:10-14:25  | 227 Seeley W. Mudd building     |
+| *Office hours* | Tuesday 09:00-10:00 | Lehman Library group study area |
 
 You can find lectures, slides and problem sets in the [[https://jm4474.github.io/Courses-IntroEconometrics-Ph.D/][class page]]. 
 
