@@ -1,5 +1,6 @@
 #+TITLE: Fall 19: Intro to Econometrics TA material  
 #+AUTHOR: Gustavo Pereira
+#+STARTUP: beamer
 
 
 * README page
@@ -111,7 +112,7 @@
    :EXPORT_FILE_NAME: notes/Recitation1.pdf
    :EXPORT_TITLE: Recitation 1
    :EXPORT_OPTIONS: toc:nil
-   :EXPORT_LATEX_OPTIONS: \input{auxfiles/header_basic.tex}
+   :EXPORT_LATEX_HEADER: \input{auxfiles/header_basic.tex}
    :END: 
 
    In this recitation, I review the material presented in lectures 1 and 2. I
@@ -235,7 +236,159 @@
       
     For the right-continuity part, one useful way of checking your proof is to
     make sure you understand why your proof doesn't apply to the left limit. 
+** Recitation 2
+   :PROPERTIES: 
+   :EXPORT_FILE_NAME: notes/Recitation2.pdf
+   :EXPORT_TITLE: Intro to Econometrics: Recitation 2
+   :EXPORT_OPTIONS: toc:nil H:2
+   :EXPORT_LATEX_HEADER: \input{auxfiles/header_beamer.tex}
+   :END: 
+*** Review Part
+**** Review
+     #+BEAMER: \framesubtitle{Random variables - \emph{univariate} case} 
+     #+BEAMER: \begin{center} $(\Omega, \mathcal F, \mathbf P)$ \end{center}
+     
+     - $X:\Omega\to\mathbf R$
+     - CDF:
+       \[ F_X(x) = \mathbf P( \left\{\omega: X(\omega) \leq x\right\}) \]
+       + Completely characterizes $\mathbf P\{X \in B\}$ for $B \subset \mathbf R$
+     - Absolutely continuous: 
+       \[F_X(x) = \int_{-\infty}^x f_X(x) dx\]
+**** Review
+     #+BEAMER: \framesubtitle{Random variables - \emph{multivariate} case} 
+     #+BEAMER: \begin{center} $(\Omega, \mathcal F, \mathbf P)$ \end{center}
+     
+     - $X:\Omega\to\mathbf R^S$ where $X(\omega) = (X_1(\omega),\ldots, X_S(\omega))'$
+     - CDF:
+       \[ F_X(x_1, \ldots, x_S) = \mathbf P( \{\omega: X_1(\omega) \leq x_1, \ldots, X_S(\omega) \leq x_S  \}) \]
+       + Completely characterizes $\mathbf P\{X \in B \}$ for $B\subset \mathbf R^S$
+     - Absolutely continuous: 
+       \[F_X(x_1, \ldots, x_S) = \int_{-\infty}^{x_1}\cdots\int_{-\infty}^{x_S} f_X(x_1, \ldots, x_S) dx_S \cdots dx_1\]
+**** Review 
+     #+BEAMER: \framesubtitle{Random variables - \emph{multivariate} case} 
+     - <1-> Result: if $F:\mathbf R\to[0,1]$ is
+       1. Increasing
+       2. Right-continuous
+       3. Satisfies $\lim_{x\to\infty} F(x) = 1 - \lim_{x\to-\infty} F(x) = 1$
+       Then it is the CDF of some random variable $X:\Omega\to\mathbf R$
+     - <2-> Can you think of (or prove?) an S-dimensional analog of the statement above?
+**** Review 
+     #+BEAMER: \framesubtitle{Random variables - \emph{multivariate} case} 
+     - If $F:\mathbf R^2\to[0,1]$ is
+       1. <1-> Increasing
+       2. <1-> ``Continuous from above''
+       3. <1-> Has the following limits:
+          1. $\lim_{x_1 \to -\infty} F(x_1, x_2) = 0$ for all $x_2$
+          2. $\lim_{x_2 \to -\infty} F(x_1, x_2) = 0$ for all $x_1$
+          3. $\lim_{x_1 \to \infty} \lim_{x_2 \to \infty} F(x_1, x_2) = 1$
+       4. <2-> Satisfies, for $x_1^* \geq x_1$ and $x_2^* \geq x_2$,
+          \[ F(x_1^*, x_2^*) - F(x_1^*, x_2) - F(x_1, x_2^*) + F(x_1, x_2) \geq 0 \]
+       Then $F$ is the CDF of a random variable $X:\Omega\to\mathbf R^2$
+       
+     (Durrett, sec 2.9)
+**** Review
+     #+BEAMER: \framesubtitle{Marginals} 
+     
+     - <1-> Marginal with respect to coordinate $s$, $F_s : \mathbf R \to [0,1]$
+       \[ F_s(x) = \mathbf P(\left\{ \omega: X_s(\omega) \leq x \right\})  \] 
+     - <2-> How do you obtain it?
+     - <3-> Just take limits. Suppose $S=2$ and we want to recover first coordinate:
+       \[ F_1(x_1) = \lim_{x_2 \to \infty}  F(x_1,x_2)  \]
+       
+       Proof? 
+**** Review
+     #+BEAMER: \framesubtitle{Marginals} 
+     
+     - How do you recover a marginal pdf? Suppose $X:\Omega\to\mathbf R^2$ has pdf $f(x_1,x_2)$:
+       \[f_1(x_1) = \int_{-\infty}^\infty f(x_1, x_2) dx_2\]
+     - Proof? 
+**** Review
+     #+BEAMER: \framesubtitle{Digression: marginals don't determine joints} 
+     
+     - A very useful counterexample: 
+       - <1-> Let $X \sim N(0,1)$
+       - <2-> Let $W$ be independent of $X$; 
+         \[ \mathbf P(W = 1) = \mathbf P(W = -1) = \tfrac{1}{2}\]
+       - <3-> Define $Y = WX$. The marginal is the same as $X$:
+         \begin{align*}F_Y(y) = \mathbf P(WX \leq y) &= \frac{1}{2} \mathbf P(X \leq y) + \frac{1}{2} \mathbf P(-X\leq y) \\ 
+           &= F_X(y)\end{align*}
+       - <4-> $(X,Y)$ is not multivariate normal. Why? 
+       - <5-> $X+Y$ has a mass at zero!
+**** Review
+     #+BEAMER: \framesubtitle{Digression: marginals don't determine joints} 
+
+     \centering \includegraphics[scale=0.4]{./codes/Notes_PS2_simunormal.pdf}    
+**** Review
+     #+BEAMER: \framesubtitle{Moments of multivariate RVs} 
+     - Focus on the case when there is a pdf
+     - <1-> ``Definition''
+       \[  \mathbf Eg(X) =  \int_{\mathbf R^S} g(x) f_X(x)dx   \]
+     - <2-> First moment: 
+       \[ \mu_X =  \mathbf EX \]
+     - <3-> Second moment: 
+       \[ V(X) = \mathbf E \left[ (X - \mu_X)(X - \mu_X)' \right] \]
+       #+BEAMER: \vspace{-0.3cm}
+       - When is $V(X)$ finite?
+     - <4-> Covariance btw X and Y: 
+       \[ \cov(X,Y) = \mathbf E \left[ (X - \mu_X)(Y-\mu_Y)' \right] \]
+**** Review
+     #+BEAMER: \framesubtitle{Moment generating functions of multivariate RVs} 
+     - <1-> MGF: 
+       \[  m_X(\mathbf t) = \mathbf E\left[ e^{\mathbf t'X} \right] = \mathbf E\left[ e^{\sum_{i=1}^S t_i X_i} \right]  \]
+     - <2-> Result: suppose  $X$ and $Y$ have a moment generating function, and 
+       \[ m_X(\mathbf t) = m_Y(\mathbf t)\]
+       for all $\mathbf t$. Then $F_X(\mathbf t) = F_Y(\mathbf t)$ for all $\mathbf t$.
+     - <3-> Result (stronger):  suppose that, for all $\mathbf t \in \mathbf R^S$, $\alpha \in \mathbf R$, 
+       \[ \mathbf P\{ \mathbf t'X \leq \alpha \} = \mathbf P\{ \mathbf t'Y \leq \alpha \} \]
+       then $F_X(z) = F_Y(z)$ for all $z\in\mathbf R^S$
+*** PSet
+**** PS2: Projections, conditioning, linear predictors
+     #+BEAMER: \framesubtitle{Projections} 
+
+     Let $(V, \langle\cdot,\cdot\rangle)$ be a vector space with an inner product. 
+     - <2-> Orthogonal projection of $v$ into (closed) $W\subseteq V$:
+       \[ v - \proj_W(v)\perp w \]
+       for all $w\in W$
+***** Projection in a Hilbert Space 
+      :PROPERTIES: 
+      :BEAMER_env: theorem
+      :BEAMER_opt: shadow=true
+      :BEAMER_act: 3
+      :END:
       
+      Let $W\subset V$ be a closed vector subspace of $V$. 
+
+      For any $v \in V$, the distance minimization problem
+      \[\min_{w\in W} \| v - w \|\]
+      has a unique solution $w^* \in W$. Moreover, $w^* = \proj_W(v)$.
+**** PS2: Projections, conditioning, linear predictors
+     #+BEAMER: \framesubtitle{Projections} 
+     What if $W$ has a finite basis? 
+     \[ W = \vsp \{w_1, \ldots, w_K\}\]
+     - Orthogonal projection of $v$ into $W$ is 
+      \[  \proj_W(v) = \sum_{i=1}^K \frac{\langle w_i, v\rangle}{\langle w_i, w_i\rangle} w_i  \]
+
+     Using this result in the pset is fair game 
+     
+**** PS2: Projections, conditioning, linear predictors
+     #+BEAMER: \framesubtitle{Projections} 
+     
+     Space $V = \{ X:\Omega\to\mathbf R^S: \mathbf E\|X\|^2 < \infty \}$ is a Hilbert
+     space with 
+     \[ \langle X, Y\rangle = \mathbf E XY\]
+      
+     - <2-> Fix variables $X$, $Y$ in $V$ and consider the subspace
+       \[ W = \{ Z: \Omega \to \mathbf R : Z = \alpha + \beta (X - \mu_X)\} \] 
+       (Is there a finite basis for $W$?)
+**** PS2: Projections, conditioning, linear predictors
+     #+BEAMER: \framesubtitle{Projections}
+     The problem
+     \[  \min_{(\alpha, \beta)} \left[ Y - \alpha - \beta(X-\mu_X) \right]^2 \]
+
+     is equivalent to some norm minimization problem involving $Y, X$ and $W$.
+
+     What is it?
+
 ** Unsorted
    :PROPERTIES: 
    :EXPORT_FILE_NAME: notes/unsorted-notes.pdf
