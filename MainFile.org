@@ -309,11 +309,12 @@
        - <1-> Let $X \sim N(0,1)$
        - <2-> Let $W$ be independent of $X$; 
          \[ \mathbf P(W = 1) = \mathbf P(W = -1) = \tfrac{1}{2}\]
-       - <3-> Define $Y = WX$. The marginal is the same as $X$:
+       - <3-> Define $Y = WX$. Claim: $(X,Y)$ has normal marginals, but $(X,Y)$ is not jointly normal.
          \begin{align*}F_Y(y) = \mathbf P(WX \leq y) &= \frac{1}{2} \mathbf P(X \leq y) + \frac{1}{2} \mathbf P(-X\leq y) \\ 
            &= F_X(y)\end{align*}
+         So marginals of $(X,Y)$ are the same
        - <4-> $(X,Y)$ is not multivariate normal. Why? 
-       - <5-> $X+Y$ has a mass at zero!
+       - <5-> $X+Y$ has a  mass at zero, with probability $\frac{1}{2}$!
 **** Review
      #+BEAMER: \framesubtitle{Digression: marginals don't determine joints} 
 
