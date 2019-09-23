@@ -663,9 +663,9 @@
     projection theorem) to every $\mathbf w = \alpha + \beta (\mathbf z - \mu_z)$.
     
     Taking $\beta=0$, we see that $\mathbf w^*$ must satisfy 
-    \[  0 = \langle \mathbf y - \mathbf w^*, \alpha \rangle = \mathbf E\left[ \alpha' \mathbf y  \right] - \mathbf E\left[ \alpha' \mathbf w^*  \right] \]
+    \[  0 = \langle \mathbf y - \mathbf w^*, \alpha \rangle = \mathbf E\left[ \alpha' \mathbf y  \right] - \mathbf E\left[ \alpha' \alpha^*  \right] \]
     for all vectors $\alpha \in M(n,1)$. Taking these to be the elements of the canonical basis, we conclude that
-    \[ \mathbf w^* = \mu_y\]
+    \[ \alpha^* = \mu_y\]
     
     Now take $\alpha=0$. The orthogonality condition now implies that for any $\beta \in M(n,k)$,
     \[ 0 = \langle \mathbf y - \beta^* (\mathbf z - \mu_z) , \beta ( \mathbf z - \mu_z ) \rangle  =  \mathbf E\left[ (\mathbf z -\mu_z)' \beta' y  \right] - \mathbf E\left[ (\mathbf z -\mu_z)' \beta' \beta^* (\mathbf z - \mu_z)  \right]  \]
