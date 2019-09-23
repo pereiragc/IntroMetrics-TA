@@ -479,7 +479,7 @@
      
        + <3-> Mathematically: the model is identified iff for every $\theta \ne
          \theta'$,
-         there exists $x \in \mathbf R^S$ such that $F_\theta(x) = F_{\theta'}(x)$
+         there exists $x \in \mathbf R^S$ such that $F_\theta(x) \ne F_{\theta'}(x)$
        + <4-> What if the model was specified in terms of PDFs? What about general probability distributions?
      - <5-> A /statistic/ is any function $T:\mathbf R^S \to \mathbf R^K$. We
        say that $T$ is *sufficient* if \[ \mathbf P_\theta( \cdot | T(\cdot)) \]
