@@ -683,7 +683,8 @@
     \[\Sigma_{yz} = \beta^* \Sigma_{zz} \]
     which in turn yields $\beta^* = \Sigma_{yz} \Sigma_{zz}^{-1}$ whenever
     $\Sigma_{zz}$ has an inverse. In that case, the BLP is 
-    \[ \mathbf w^*  = \mu_y + \Sigma_{yz} \Sigma_{zz}^{-1} (\mathbf z - \mu_z)  \] 
+    #+NAME: eq:expression_blp
+    \begin{equation} \mathbf w^*  = \mu_y + \Sigma_{yz} \Sigma_{zz}^{-1} (\mathbf z - \mu_z)  \end{equation} 
     
 **** Appendix: the Trace operator
      - let $A(i,j)$ denote the entry $(i,j)$ of any matrix
