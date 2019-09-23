@@ -503,9 +503,6 @@
        \[ E[X_1 | X_1 + X_2] = E[X_2 | X_1 + X_2] = \frac{X_1  + X_2 }{2} \] 
        moreover, conditional variance also doesn't depend on $\mu$ 
        
-       + Statistical decision problem
-         * Definition
-         * Examples
 *** Statistical decision problem
 **** Statistical decision problem
      #+BEAMER: \framesubtitle{Definition}
