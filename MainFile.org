@@ -389,6 +389,170 @@
      is equivalent to some norm minimization problem involving $Y, X$ and $W$.
 
      What is it?
+** Recitation 3
+   :PROPERTIES: 
+   :EXPORT_FILE_NAME: notes/Recitation3.pdf
+   :EXPORT_TITLE: Intro to Econometrics: Recitation 3
+   :EXPORT_BEAMER_THEME: Boadilla
+   :EXPORT_LATEX_CLASS_OPTIONS: [presentation, smaller]
+   :EXPORT_OPTIONS: toc:nil H:2
+   :EXPORT_LATEX_HEADER: \input{../auxfiles/header_beamer.tex}
+   :END:
+   
+*** Outline
+**** Outline
+     - Review: 
+       + Statistical model
+         * Definition
+         * Examples
+         * Identification, sufficiency 
+       + Statistical decision problem
+         * Definition
+         * Examples
+*** Statistical model
+**** Statistical model
+     #+BEAMER: \framesubtitle{Definition}
+     - <1-> Idea: formalize statements such as
+       1. Let $\{h_1, \ldots, h_{10}\}$ denote the outcome of $10$ independent
+          coin flips with probability $p$ of landing heads
+       2. <2-> ``Let ${X_1, X_2, X_3}$ be iid uniform in $[0,\theta]$ where $\theta$ is an unknown positive real number''
+       3. <3-> ``Let $\{Y_t\}_{t\in1,2,\ldots, T}$ be an AR(1) process with gaussian innovations''
+
+     - <4-> *Claim.* All statements equivalent to: ``let $\mathbf X$ be
+       a draw from some cdf $F:\mathbf R^S \to [0,1]$ where $F$ is taken from some restricted set of CDFs, 
+         \[F \in \mathfrak F\text{ ''}\]
+**** Statistical model
+     #+BEAMER: \framesubtitle{Definition}
+     - <1-> It's common to write 
+       \[ \mathfrak F = \{ F_\theta \}_{\theta \in \Theta} \]
+     - <2-> For example: 
+       \[\mathfrak F = \left\{ F:\mathbf R\to\mathbf R | F\text{ is the cdf of }  U[a,b] \text{ for some }a\leq b\right\}\]
+       #+BEAMER: \vspace{-0.5cm}
+       - Does this  represent a statistical model?
+     - <3-> We can define for $\theta = (a,b)$, 
+       \[ F_{\theta} = \frac{t-a}{b-a} \mathbf 1_{[a,b]}(t) \]
+     - <4->  With that indexing, 
+       \[ \mathfrak F = \{F_{\theta} \}_{\theta \in \Theta}\]
+       where $\Theta = \{(x,y) \in \mathbf R^2 : x \leq y\}$
+**** Statistical model 
+     #+BEAMER: \framesubtitle{Comment}
+     - <1-> Why do we specify models with CDFs?
+     - <2-> Reason: in Euclidean spaces, distribution of random variables is fully characterized by CDF
+     - <3-> However, if all CDFs in your model are absolutely continuous, it's
+       equivalent to specify a family of PDFs
+     - <4-> In the course, we will do this interchangeably; if a model is
+       specified in terms of PDFs, it's understood that we're considering only absolutely continuous distributions
+     - <5-> We can also specify the model with more general probability distributions: 
+       \[ \{P_\theta: \mathcal B(\mathfrak X) \to [0,1]\}_{\theta \in \Theta} \]
+       where $\mathfrak X$ a possibly more general space (e.g., a space of bounded continuous functions) 
+**** Statistical model
+     #+BEAMER: \framesubtitle{Example 1: ten coin flips}
+     - <1-> Single coin flip: 
+       \[ F_p^1(x) = \begin{cases} 0 & \text{if } x < 0 \\ 1 - p & \text{if } x \in [0,1) \\ 1 & \text{otherwise} \end{cases}\]
+     - <2-> Then the joint is  $F_p(h_1, h_2, \ldots, h_{10}) = F_p^1(h_1) \cdots F_p^1(h_{10})$
+     - <3-> Model: 
+       \[ \{F_p\}_{p \in [0,1]} \]
+       + What is $\Theta$ ? 
+**** Statistical model
+     #+BEAMER: \framesubtitle{Example 2: Uniform $[0,\theta]$}
+     - <1-> Three independent uniform $[0,\theta]$. We know that for a given $\theta$
+       \[ F_\theta^2(t) = \frac{t}{\theta} \mathbf 1_{[0,\theta]}(t) \]
+       is the cdf of $U[0,\theta]$ for non-negative $\theta$.
+     - <2-> Thus joint is 
+       \[ F_\theta(x_1, x_2, x_3) = F^2_\theta(x_1) F^2_\theta(x_2) F^2_\theta(x_3)\]
+       and statistical model is \[ \{ F_\theta \}_{\theta \in (0,\infty)} \]
+**** Statistical model
+     #+BEAMER: \framesubtitle{Example 3: AR(1) with Gaussian innovations}
+     - <1-> An ``AR(1) with Gaussian innovations'' means that 
+       \[ Y_t - \mu = \rho (Y_{t-1} - \mu) + \epsilon_t \] 
+       where $\epsilon_t$ are drawn iid $N(0, \sigma^2)$. 
+       - <1-> Note: need to make assumption about $Y_0$. Assume fixed.
+     - <2-> Equivalently,
+       \[ Y_t | Y_{t-1}, \ldots, Y_1 \sim N(\mu + \rho(Y_{t-1} - \mu) , \sigma^2) \] 
+     - <3-> How do you write the joint CDF? By what parameters will it be indexed?
+**** Statistical model 
+     #+BEAMER: \framesubtitle{Identification \& sufficiency}
+     
+     - <1-> Summary of previous discussion: a statistical model is a family of
+       distributions, $\{F_\theta: \mathbf R^S \to [0,1]\}_{\theta\in\Theta}$.
+     - <2-> If each $\theta \in \Theta$ induces a unique distribution, the model is called *identified*.
+     
+       + <3-> Mathematically: the model is identified iff for every $\theta \ne
+         \theta'$,
+         there exists $x \in \mathbf R^S$ such that $F_\theta(x) = F_{\theta'}(x)$
+       + <4-> What if the model was specified in terms of PDFs? What about general probability distributions?
+     - <5-> A /statistic/ is any function $T:\mathbf R^S \to \mathbf R^K$. We
+       say that $T$ is *sufficient* if \[ \mathbf P_\theta( \cdot | T(\cdot)) \]
+       does not depend on $\theta$. Intuitively, if you condition on $T(X)$, the
+       full data become uninformative about $\theta$.
+       
+**** Statistical model 
+     #+BEAMER: \framesubtitle{Identification \& sufficiency}
+     - <1->  Example: let $X_1$ and $X_2$ be iid $N(\mu, 1)$.
+       + <2-> Model here is $\{F_\mu\}_{\mu \in \mathbf R}$ where $F_\mu$ is cdf
+         of independent joint normal with mean $(\mu,\mu)$ and identity variance matrix
+     - <2->  Then $T(X_1, X_2) = X_1 + X_2$ is sufficient.
+     - <3-> Before proof: note that crucially the data is 2 dimensional, but the sufficient statistic is 1d 
+     - <4-> Now: 
+       \[\begin{bmatrix} X_1 \\ X_2 \\ T(X_1, X_2) \end{bmatrix} \sim \mathcal N_3 \left(  \begin{bmatrix} \mu \\ \mu \\ 2\mu \end{bmatrix}, 
+         \begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 2 \end{bmatrix} \right) \]
+     - <5-> To find conditional distribution of $X_1$ and $X_2$ given $T(X_1, X_2)$, use the BLP trick. 
+**** Statistical model 
+     #+BEAMER: \framesubtitle{Identification \& sufficiency}
+     - <1-> Math: 
+       \[ E[X_1 | X_1 + X_2] = E[X_2 | X_1 + X_2] = \frac{X_1  + X_2 }{2} \] 
+       moreover, conditional variance also doesn't depend on $\mu$ 
+       
+       + Statistical decision problem
+         * Definition
+         * Examples
+*** Statistical decision problem
+**** Statistical decision problem
+     #+BEAMER: \framesubtitle{Definition}
+     - Definition: statistical decision problem is 
+        \[ (\Theta, A, \mathcal L, \{F_{\theta}\}_{\theta\in\Theta}) \]
+       where 
+       1. <2-> $\Theta$ is a parameter space
+       2. <3-> $A$ is a space of actions
+       3. <4-> $\mathcal L$ is a utility/loss function
+       4. <5-> $\{F_\theta\}$ is a statistical model
+          + Remember: this can be alternatively specified as $\{P_\theta\}_{\theta\in\Theta}$ or $\{f_\theta\}_{\theta\in\Theta}$
+**** Statistical decision problem 
+     #+BEAMER: \framesubtitle{Interpretation}
+      + Statistician is supposed to decide something. Examples: 
+        1. <2-> Pick the $\theta$ that she thinks generated the data
+           \[  A  = \Theta \] 
+        2. <3-> Given a split $\Theta = \Theta_0 \sqcup \Theta_1$, pick which of
+           $\Theta_0$ or $\Theta_1$ is more likely to contain the parameter that generated data
+           \[ A = \{0, 1\} \] 
+        3. <4-> Pick a subset $C \subseteq \Theta$ where she thinks the true $\theta$ falls in
+           \[ A = \text{reasonable subsets of }\Theta \] 
+**** Statistical decision problem 
+     #+BEAMER: \framesubtitle{Interpretation}
+     + <1-> Model this as a sequential game. 
+       - <2-> /First stage:/ Nature picks $\theta \in \Theta$. This is not observable by statistician
+       - <3-> /Stage $1\frac{1}{2}$:/ Nature randomly draws $X \sim F_\theta$
+       - <4-> /Second stage:/ Statistician chooses action $a$
+     + <5-> At the terminal nodes, statistician gets the loss $\mathcal L(a, \theta)$
+     + <6-> Let $\mathfrak X \subset \mathbf R^S$ denote the (common) support of $F_\theta$. A
+       *strategy* for the statistician in this game is a function 
+       \[ d : \mathfrak X \to A  \]
+       I.e. a specification of an action for every possible decision node she faces
+       
+       This strategy is called a decision rule in the mathematical statistical jargon 
+**** Statistical decision problem 
+     #+BEAMER: \framesubtitle{Risk function} 
+     - <1-> What sort of criterion should we use to rank decision rules?
+     - <2-> We use the expected utility paradigm. For fixed $\theta$, we postulate that
+       \[  d_1(\cdot) \precsim_\theta d_2(\cdot) \iff \mathbf E_\theta \left[  \mathcal L(d_1(X), \theta)   \right]
+       \geq \mathbf E_\theta \left[  \mathcal L(d_2(X), \theta)   \right]\] 
+       #+BEAMER: \vspace{-0.5cm}
+       - With respect to what are we taking the expectation?
+     - <3-> This expectation is called /risk/. Notation: 
+       \[ R(d, \theta) := \mathbf E_\theta \left[ \mathcal L(d(X, \theta) \right] = \int_{\mathbf R^S} d(x, \theta) dF_\theta(x) \]
+     - <4-> Analogy  with game theory: /dominated/ strategies
+       - A decision rule that is not weakly dominated is called admissible
+       
 
 ** Unsorted
    :PROPERTIES: 
