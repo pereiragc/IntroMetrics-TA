@@ -549,8 +549,138 @@
        \[ R(d, \theta) := \mathbf E_\theta \left[ \mathcal L(d(X, \theta) \right] = \int_{\mathbf R^S} d(x, \theta) dF_\theta(x) \]
      - <4-> Analogy  with game theory: /dominated/ strategies
        - A decision rule that is not weakly dominated is called admissible
-       
+** Recitation 4
+   :PROPERTIES: 
+   :EXPORT_FILE_NAME: notes/Recitation4.pdf
+   :EXPORT_TITLE: Intro to Econometrics: Recitation 4
+   :EXPORT_BEAMER_THEME: Boadilla
+   :EXPORT_LATEX_CLASS_OPTIONS: [presentation, smaller]
+   :EXPORT_OPTIONS: toc:nil H:2
+   :EXPORT_LATEX_HEADER: \input{../auxfiles/header_beamer.tex}
+   :END:
+*** Recitation 4
+**** Roadmap for today
+     - Review:
+       1) Statistical problem
+       2) Bayes rules, expected posterior loss
+     - PS3
 
+**** Review: Statistical Problem 
+     #+ATTR_beamer: :overlay +-
+     - Components of a decision problem:
+       + Statistical model: $\{P_\theta\}_{\theta \in \Theta}$
+       + Action space $\mathcal A$
+       + Loss function $\mathcal L:\mathcal A\times \Theta \to \mathbf R$
+       + Decision rules: $d:\mathfrak X\to\mathcal A$
+     - Risk function: expected loss from decision $d$ when parameter is $\theta$: 
+       \[R(d(\cdot), \theta) = \int_{\mathfrak X} \mathcal L(d(x), \theta) f_\theta(x)dx \]
+     
+***** Comments                                                     :noexport:
+      - Note that $\mathcal L(a, \theta)$ ranks actions for fixed $\theta$
+      - Note that $R(d(\cdot), \theta)$ ranks decision rules (functions) for fixed $\theta$
+        \[ d_1(\cdot) \succsim d_2(\cdot) \iff R(d_1(\cdot), \theta) \leq R(d_2(\cdot), \theta) \]
+      - In that sense, "risk" is just like a "generalized loss" where the
+        "generalized action space" is the space of all strategies
+**** Review: Admissibility      
+     #+ATTR_beamer: :overlay +-
+     - Decision rule $d_1$ is /dominated/ by $d_2$ iff, for all $\theta \in \Theta$,
+       \[ d_1 \precsim_\theta d_2  \]
+       and $d_1 \prec_{\theta_0} d_2$
+       for at least one $\theta_0$
+       + What does it mean for a rule to be /not dominated/ by another rule? 
+     - A rule $d$ that is not dominated by any other rule is called /admissible/
+       + Expand the definition of admissible 
+     - It is generally hard to find admissible rules.
+**** Review: priors, posteriors, etc...  
+     #+ATTR_beamer: :overlay +-
+     - Suppose model is $\{f_\theta\}_{\theta \in \Theta}$, i.e., data has a density for all possible parameters
+     - Suppose also $\Theta \subseteq \mathbf R^k$, and pdf $\pi(\theta)$ summarizes some prior belief about $\theta$
+       - With this, we're interpreting the parameter $\theta$ as a /random variable/
+       - Before the prior was introduced, $\theta$ was merely an index
+     - With this structure, we can define the induced joint density of data and parameters,
+       \[  f(x, \theta; \pi) = f_\theta(x) \pi(\theta)  \]
+       + Does this integrate to one?
+**** Review: priors, posteriors, etc...
+     #+ATTR_beamer: :overlay +-
+     - Given induced joint density, 
+       \[ f(x | \theta; \pi) = \frac{f_\theta(x) \pi(\theta)}{\pi(\theta)} = f_\theta(x)\]
+       #+BEAMER: \vspace{-0.3cm}
+     - What about the marginal of data?
+       - Recover it by integrating $\theta$ out:
+         \[ f(x; \pi)  = \int_{\theta \in \Theta} f_\theta(x) \pi(\theta) d\theta \]
+       #+BEAMER: \vspace{-0.3cm}
+     - Conditional density of parameter given data?
+       \[f(\theta | x; \pi) = \frac{f(x,\theta; \pi)}{f(x;\pi)} = \frac{f_\theta(x)\pi(\theta)}{\int_{\theta\in\Theta} f_\theta(x)\pi(\theta)d\theta}\]
+       #+BEAMER: \vspace{-0.3cm}
+       - This is called /posterior density/ in Bayesian jargon
+**** Review: Bayes rules
+     #+ATTR_beamer: :overlay +-
+     - Let's go back to the statistical decision problem
+     - Let $d(\cdot)$ be a decision rule, and $\pi$ a prior density over $\Theta$
+     - Bayes risk of $d(\cdot)$ given $\pi$ is
+       \[\begin{aligned} r(d(\cdot), \pi) &= \int_\Theta  R(d(\cdot), \theta) \pi(\theta)d\theta \\
+                                          &= \int_\Theta \int_{\mathfrak X} \mathcal L(d(x), \theta) f(x, \theta; \pi)  dx \,d\theta  \end{aligned}\]
+     - A /Bayes decision rule/ $d^*$ is one that minimizes Bayes risk given a prior $\pi$. 
+       \[ d^*_\pi(\cdot) = \arg\min_{d(\cdot)} r(d(\cdot), \pi) \]
+     - Important feature: /under mild assumptions, Bayes rules are admissible/
+     
+**** Review: finding Bayes rules
+     #+ATTR_beamer: :overlay +-
+     - Rewrite the Bayes risk using Fubini's theorem
+       \[\begin{aligned} r(d(\cdot), \pi) &= \int_{\mathfrak X} \left[ \int_\Theta  \mathcal L(d(x), \theta) f(\theta | x; \pi)  d\theta\right] f(x; \pi) dx\\
+                           &=  \int_{\mathfrak X} \psi(d(x), x) f(x; \pi) dx \end{aligned}\]
+       where
+       \[ \psi(a, x) = \int_\Theta \mathcal L(a, \theta) f(\theta | x; \pi) d\theta \]
+     - Let $d^*(x) = \arg\min_{a\in\mathcal A} \psi(a,x)$
+       + Immediate consequence: for any decision rule $d(\cdot)$,
+         \[ \psi(d^*(x), x) \leq \psi(d(x), x) \] 
+         #+BEAMER: \vspace{-0.5cm}
+       + Important: optimization in space $\mathcal A$ is easier than in  the space of all $d:\mathfrak X \to \mathcal A$!
+       
+** Recitation 5
+*** Estimation
+    #+ATTR_beamer: :overlay +-
+    - Estimation refers to the case when $\mathcal A = \Theta$
+      - Interpretation: ``action'' is to guess the correct parameter
+    - Common loss function:
+      \[ \mathcal L(a, \theta) = \| a - \theta \|^2\]
+    - Decision rule here called *estimator*
+    - Example: *Maximum likelihood estimator* 
+         \[ \hat\theta (x) = \max_{\theta \in \Theta} f_\theta(x) \]
+
+*** Bayes estimation
+    - A Bayes estimator for $\theta$ is a decision rule $\hat\theta$ that minimizes Bayes risk for some prior $\pi(\theta)$
+**** Bayes rule for squared error loss
+     If $\mathcal L(a,\theta) = \|a-\theta\|^2$, then the Bayes rule $\thetabayes(x)$ for a prior $\pi(\theta)$ satisfies 
+     \[\thetabayes(x) =  \mathbf E \left( \theta | x \right) \]
+     where the expectation above is taken with respect to 
+     \[ f(\theta | x) := \frac{f_\theta(x) \pi(\theta)}{\int_\Theta f_\theta(x) \pi(\theta) d\theta } \]
+     In other words, 
+     \[ \thetabayes(x) = \int_\Theta \theta f(\theta|x) d\theta  \]
+*** Bayes estimation
+    #+attr_beamer: :overlay +-
+    - What is the previous slide saying?
+      1) The optimal decision rule is the integral shown
+      2) One can *interpret* that as a posterior mean
+*** Bayes estimation
+    - Result shown for posterior mean is actually more general
+    - Says that Bayes rule minimizes posterior loss
+    - If loss function is different, minimal posterior loss could mean: 
+      + Posterior mode
+      + Posterior median
+      + etc...
+*** Bayes estimation
+    #+attr_beamer: :overlay +-
+    - Proof that $\thetabayes=\mathbf E(\theta|x)$
+    - Relies on the following principle:
+      + Let $F:\mathbf R^k \times \mathfrak X \to \mathbf R$ be some function
+      + Suppose we're trying to find a *function* $u^*(x)$ such that
+        \[ u^*(\cdot) = \arg\min_{u(\cdot)} \int_\mathfrak X F(u(x),x) \phi(x) dx   \]
+      + Then one option is to pick for every $x \in \mathfrak X$,
+        \[ u^*(x) =  \arg\min_{u \in \mathbf R^k} F(u,x) \]
+    - Rest of the proof: board
+
+    
 ** Unsorted
    :PROPERTIES: 
    :EXPORT_FILE_NAME: notes/unsorted-notes.pdf
@@ -716,3 +846,7 @@
 [fn:2] See the appendix on the trace operator for details.
 
 [fn:1]  The sets whose complement is finite are called co-finite sets.
+
+
+     
+
