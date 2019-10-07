@@ -106,6 +106,26 @@
     
     Gustavo
 
+** Pset 4
+   
+*** Clarifying the meaning of posterior in Q3
+    #+begin_quote
+    In Q3 of PS4, we are asked to compute the posterior mean for $\beta$ and
+    $\sigma$, and I assumed that usually meant the expectation of the conditional
+    distribution of $\beta$, conditioned on data, and similarly, the conditional
+    distribution of $\sigma$ on the data.
+
+    In the hint, I'm questioning my understanding because $\beta$ was conditioned on
+    $\sigma$ as well. Going forward, does that mean posterior distributions condition
+    on data and all other parameters except the parameter in question? More
+    specifically, do you know of any resources where I could read up on the
+    mechanics behind this?
+    #+end_quote
+    
+    Computing the distribution of beta given Y and sigma is only supposed to be an intermediate step to make calculations easiser. 
+
+    The end goal is to find the joint distribution of beta and sigma given data. 
+    
 * Notes
 ** Recitation 1
    :PROPERTIES: 
