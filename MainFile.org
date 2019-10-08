@@ -152,9 +152,7 @@
     compare?
     #+end_quote
     
-    You're in the right track, but let me point something out first. 
-    
-    Admissibility guarantees that 
+    You're in the right track, but let me point something out first. Admissibility guarantees that 
     \[ \text{MSE}(\hat\beta^{\text{Ridge}}, \beta) \leq \text{MSE}(\hat\beta^{\text{OLS}}, \beta) \] 
     holds for at least one $\beta$. Rigorously speaking, the inequality is not
     necessarily strict, because they could have the same risk all over the parameter
@@ -164,7 +162,8 @@
     comparison that holds for every possible $\beta$, try to use the one $\beta$
     you know exists for which the ranking of MSEs above holds. Write down both
     sides of the inequality for that particular $\beta$, and see if you can
-    compare either side with $V_\beta(\hat\beta^{\text{Ridge}})$ for that $\beta$.
+    compare either side with $V_\beta(\hat\beta^{\text{Ridge}})$ -- note that
+    this variance does not depend on $\beta$.
     
     
 * Notes
