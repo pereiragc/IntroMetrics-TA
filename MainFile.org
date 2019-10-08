@@ -126,6 +126,47 @@
 
     The end goal is to find the joint distribution of beta and sigma given data. 
     
+
+    
+*** Q4 - all $\beta$ vs some $\beta$
+    #+BEGIN_quote
+    I was working on question 4 and I realized that I have a bit of a gap in my
+    understanding about admissible decision rules. I know that a Ridge estimator
+    is a Bayesian estimator, and thus is admissible. I know that an admissible
+    decision rule is not dominated, so since the OLS estimator is another
+    decision rule, it is not the case that the risk of the OLS estimator is less
+    than or equal to the risk of the Ridge estimator for all beta and strictly
+    less than for some beta. So then, as I understand it, this implies that
+    there is *some* beta for which the OLS estimator has strictly higher risk
+    than the Ridge estimator (but I know nothing about how they compare for any
+    other beta). But, I don't think this tells me anything about how the risks
+    compare for all the other betas, right?
+
+    Since in this problem we'd have that the risk for each estimator is the mean
+    squared error, and thus bias + tr(variance), I think I'd want to have an
+    inequality the compares the MSE of the Ridge estimator to the MSE of the OLS
+    estimator, but from the fact that the Ridge estimator is admissible I only
+    see how to write that inequality for *some* beta -- how can I extrapolate to
+    being able to write an inequality for *all* beta, in order to be able to
+    make a statement about how tr(var(beta_ols)) compares to tr(var(beta_ridge))
+    compare?
+    #+end_quote
+    
+    You're in the right track, but let me point something out first. 
+    
+    Admissibility guarantees that 
+    \[ \text{MSE}(\hat\beta^{\text{Ridge}}, \beta) \leq \text{MSE}(\hat\beta^{\text{OLS}}, \beta) \] 
+    holds for at least one $\beta$. Rigorously speaking, the inequality is not
+    necessarily strict, because they could have the same risk all over the parameter
+    space and that wouldn't violate admissibility. 
+
+    Now with that caveat, I would suggest that instead of trying to get a
+    comparison that holds for every possible $\beta$, try to use the one $\beta$
+    you know exists for which the ranking of MSEs above holds. Write down both
+    sides of the inequality for that particular $\beta$, and see if you can
+    compare either side with $V_\beta(\hat\beta^{\text{Ridge}})$ for that $\beta$.
+    
+    
 * Notes
 ** Recitation 1
    :PROPERTIES: 
@@ -574,7 +615,7 @@
    :EXPORT_FILE_NAME: notes/Recitation4.pdf
    :EXPORT_TITLE: Intro to Econometrics: Recitation 4
    :EXPORT_BEAMER_THEME: Boadilla
-   :EXPORT_LATEX_CLASS_OPTIONS: [presentation, smaller]
+   :EXPORT_LATEX_CLASS_OPTIONS: [presentation, smaller, handout]
    :EXPORT_OPTIONS: toc:nil H:2
    :EXPORT_LATEX_HEADER: \input{../auxfiles/header_beamer.tex}
    :END:
@@ -785,7 +826,7 @@
        for all $n$, so $\lim F_X(k) = 0$ for $k\to\infty$. 
        
       
-       
+    
 *** Best linear predictor, matrix version
     Let $M(n,k)$ denote the linear space of all matrix of dimension $n\times k$.
     
@@ -860,6 +901,83 @@
        \[ \tr(BA) = tr(B\tilde A) \]
        holds for every $B \in M(n,m)$, then 
        \[ A = \tilde A\]
+
+*** DISCARD: Comments on PS3, Q3: mixed vs behavioral strategies    
+    
+    
+      Because of the abundance of zeros and ones, I'll change the notation to make
+      my life a bit easier. The possible data realizations are denoted by
+      $\mathcal X=\{a, b\}$. Let $\Theta = \{\alpha, \beta\}$ be the possible
+      parameters. Since this is binary data, it is sufficient to know
+      $p(a | \alpha)$ and $p(a | \beta)$ for the model to be fully specified.
+      (Make sure you understand this.)
+
+
+      Let's start with the action space $\mathcal A_0 = \{\hat\alpha, \hat\beta\}$.
+      The loss function is given by
+      $\mathcal L(\hat\alpha, \alpha) = L(\hat\beta, \beta) =0$ and $1$ otherwise.
+      
+      The interpretation is that you're trying to guess whether the true state
+      of the world is $\alpha$ or $\beta$; if you guess $\alpha\hat$ when the
+      state of the world is $\beta$, or vice-versa, you lose a point. Otherwise,
+      you don't lose anything. 
+
+      (Remark: just because I'm using hat notation, doesn't mean this is an estimation problem.)
+      
+      
+      Very well. A decision rule maps data realizations in $\mathcal X$ to
+      guesses in $\mathcal A_0$. Because both sets have two elements, there are
+      four possible decision rules. 
+
+      Let's write a decision rule as $(\hat\theta_a, \hat\theta_b)$. 
+
+      Each rule can be written as a pair 
+    #+end_src
+    
+*** Comments on PS3Q3
+    
+    Note that when the action space is $\mathcal A=\{a_0, a_1\}$ -- with associated loss
+    function $\mathcal L(a_i, \theta_j) = \mathbf 1(i \ne j)$ -- we have four possible strategies. 
+    
+    Let's call $\tilde A$ the set of decision rules: $\tilde A = \{d_1, d_2, d_3, d_4\}$,
+    as in the question.
+    The risk function evaluated at a given decision rule $d$ is simply a vector 
+    \[\begin{bmatrix} 
+    R(d, \theta_0) \\ 
+    R(d, \theta_1)
+    \end{bmatrix} \]
+    
+    Let $D(\tilde A)$ denote the set of all points in $\mathbf R^2$ that are the
+    risk function of some decision rule. It was your job to show that 
+    \[ D(\tilde A) = \Big \{ \overbrace{\begin{bmatrix} 0 \\ 1\end{bmatrix}}^{d_1},
+      \overbrace{\begin{bmatrix}  1-p_0 \\ p_1\end{bmatrix}}^{d_2}, 
+      \overbrace{\begin{bmatrix} p_0 \\ 1-p_1\end{bmatrix}}^{d_3},
+      \overbrace{\begin{bmatrix} 1 \\ 0\end{bmatrix}}^{d_4}
+    \Big \}\]
+    [Let's call this the /risk set/ associated with this decision problem.] 
+    
+    
+    The problem set presented one way of ``randomizing risk''. Upon observing
+    data, in part 3 you allowed, instead of choosing any particular action in
+    $\mathcal A$, to choose a distribution over points in $\mathcal A$. Since
+    $\mathcal A$ is binary, this amounts to choosing a number $\delta \in [0,1]$
+    representing the probability of playing $a_0$. COMMENT: notation
+    
+    So the new action space is $\mathcal A' = [0,1]$.
+    
+    
+    What is then a decision rule in this context? Again, any function
+    $d:\mathcal X\to\mathcal A'$. Now $\mathcal A'$ is not binary anymore, so
+    there are uncountably many possible decision rules. 
+
+    In fact, each decision rule $(\delta_0, \delta_1)$ can be mapped to the
+    square $[0,1]\times[0,1]$. 
+
+    
+
+      
+    
+
 
 * Footnotes
 
