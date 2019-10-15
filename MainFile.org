@@ -823,9 +823,7 @@
        according to $\mathbf P$ will satisfy:
        \[ F_X(k) = \mathbf P\{n: X(n) \leq k\}=  0\]
        for all $n$, so $\lim F_X(k) = 0$ for $k\to\infty$. 
-       
-      
-    
+       #+LATEX: \clearpage
 *** Best linear predictor, matrix version
     Let $M(n,k)$ denote the linear space of all matrix of dimension $n\times k$.
     
@@ -900,84 +898,227 @@
        \[ \tr(BA) = tr(B\tilde A) \]
        holds for every $B \in M(n,m)$, then 
        \[ A = \tilde A\]
+     #+LATEX: \clearpage
 
-*** DISCARD: Comments on PS3, Q3: mixed vs behavioral strategies    
-    
-    
-      Because of the abundance of zeros and ones, I'll change the notation to make
-      my life a bit easier. The possible data realizations are denoted by
-      $\mathcal X=\{a, b\}$. Let $\Theta = \{\alpha, \beta\}$ be the possible
-      parameters. Since this is binary data, it is sufficient to know
-      $p(a | \alpha)$ and $p(a | \beta)$ for the model to be fully specified.
-      (Make sure you understand this.)
+*** DISCARD: Comments on PS3, Q3: mixed vs behavioral strategies   :noexport:
+    Note that when the action space is $\mathcal A=\{a_0, a_1\}$ -- with
+    associated loss function $\mathcal L(a_i, \theta_j) = \mathbf 1(i \ne j)$ --
+    we have four possible strategies.
 
-
-      Let's start with the action space $\mathcal A_0 = \{\hat\alpha, \hat\beta\}$.
-      The loss function is given by
-      $\mathcal L(\hat\alpha, \alpha) = L(\hat\beta, \beta) =0$ and $1$ otherwise.
-      
-      The interpretation is that you're trying to guess whether the true state
-      of the world is $\alpha$ or $\beta$; if you guess $\alpha\hat$ when the
-      state of the world is $\beta$, or vice-versa, you lose a point. Otherwise,
-      you don't lose anything. 
-
-      (Remark: just because I'm using hat notation, doesn't mean this is an estimation problem.)
-      
-      
-      Very well. A decision rule maps data realizations in $\mathcal X$ to
-      guesses in $\mathcal A_0$. Because both sets have two elements, there are
-      four possible decision rules. 
-
-      Let's write a decision rule as $(\hat\theta_a, \hat\theta_b)$. 
-
-      Each rule can be written as a pair 
-    #+end_src
-    
-*** Comments on PS3Q3
-    
-    Note that when the action space is $\mathcal A=\{a_0, a_1\}$ -- with associated loss
-    function $\mathcal L(a_i, \theta_j) = \mathbf 1(i \ne j)$ -- we have four possible strategies. 
-    
     Let's call $\tilde A$ the set of decision rules: $\tilde A = \{d_1, d_2, d_3, d_4\}$,
     as in the question.
-    The risk function evaluated at a given decision rule $d$ is simply a vector 
-    \[\begin{bmatrix} 
-    R(d, \theta_0) \\ 
+    The risk function evaluated at a given decision rule $d$ is simply a vector
+    \[\begin{bmatrix}
+    R(d, \theta_0) \\
     R(d, \theta_1)
     \end{bmatrix} \]
-    
+
     Let $D(\tilde A)$ denote the set of all points in $\mathbf R^2$ that are the
-    risk function of some decision rule. It was your job to show that 
+    risk function of some decision rule. It was your job to show that
     \[ D(\tilde A) = \Big \{ \overbrace{\begin{bmatrix} 0 \\ 1\end{bmatrix}}^{d_1},
-      \overbrace{\begin{bmatrix}  1-p_0 \\ p_1\end{bmatrix}}^{d_2}, 
-      \overbrace{\begin{bmatrix} p_0 \\ 1-p_1\end{bmatrix}}^{d_3},
-      \overbrace{\begin{bmatrix} 1 \\ 0\end{bmatrix}}^{d_4}
+    \overbrace{\begin{bmatrix}  1-p_0 \\ p_1\end{bmatrix}}^{d_2},
+    \overbrace{\begin{bmatrix} p_0 \\ 1-p_1\end{bmatrix}}^{d_3},
+    \overbrace{\begin{bmatrix} 1 \\ 0\end{bmatrix}}^{d_4}
     \Big \}\]
-    [Let's call this the /risk set/ associated with this decision problem.] 
-    
-    
+    [Let's call this the /risk set/ associated with this decision problem.]
+
+
     The problem set presented one way of ``randomizing risk''. Upon observing
     data, in part 3 you allowed, instead of choosing any particular action in
     $\mathcal A$, to choose a distribution over points in $\mathcal A$. Since
     $\mathcal A$ is binary, this amounts to choosing a number $\delta \in [0,1]$
     representing the probability of playing $a_0$. COMMENT: notation
-    
+
     So the new action space is $\mathcal A' = [0,1]$.
-    
-    
+
+
     What is then a decision rule in this context? Again, any function
     $d:\mathcal X\to\mathcal A'$. Now $\mathcal A'$ is not binary anymore, so
-    there are uncountably many possible decision rules. 
+    there are uncountably many possible decision rules.
 
     In fact, each decision rule $(\delta_0, \delta_1)$ can be mapped to the
-    square $[0,1]\times[0,1]$. 
+    square $[0,1]\times[0,1]$.
 
     
 
       
+*** Admissible tests and maximization of power subject to size (WIP)
+    In lecture notes 9-10, Proposition 1 characterizes admissible tests in terms
+    of the solution of an problem of maximizing power subject to a size
+    constraint. I reproduce the statement of that proposition below.
+
+    #+NAME: prop:admissible-test-characterization
+    #+BEGIN_prop
+    Suppose that for any set $A \subseteq \mathbf{X}$
+    $$\int_{A} f(x,\theta_0)dx > 0 \implies \int_{A} f(x,\theta_1)dx > 0 .$$ 
+    A randomized test $\phi$ is admissible if and only if there exists $\alpha \in [0,1]$ such that $\phi$ maximizes power subject to having size at most $\alpha$; that is
+    #+NAME: equation:optimization
+    \begin{equation}
+    \phi \in \arg \max_{\phi} \left( 1-R(\phi, \theta_1) \right)
+    \end{equation}
+    \noindent s.t.
+    #+NAME: equation:sizecontrol
+    \begin{equation}
+    R(\phi, \theta_0) \leq \alpha
+    \end{equation}
+    #+END_prop
     
+    
+    That proposition is actually really nice. In standard statistics courses, we
+    sometimes take this maximization problem as the starting point, as if it's
+    somehow self-evident that we should seek tests that /maximize power subject
+    to size/. With the decision theoretic framework we built in the first few
+    lectures, we can actually understand why tests that solve this maximization
+    problem are of any interest to us. The reason is that this procedure yields
+    tests that aren't dominated.
 
+    Another way of framing the proposition is the following. For a fixed
+    $\alpha\in[0,1]$, let $\Phi^*(\alpha)$ denote the set of all tests $\phi^*$
+    that maximize ([[equation:optimization]]) subject to ([[equation:sizecontrol]]). 
 
+    The correspondence $\Phi^*(\alpha)$ depends on a single parameter
+    $\alpha \in [0,1]$. What proposition 1 says is that, as we vary $\alpha$,
+    we cover all possible admissible tests. In other words, 
+    \[ \mathcal A = \bigcup_{\alpha \in [0,1]} \Phi^*(\alpha) \] 
+     is /exactly/ the set of all admissible tests. 
+**** Elaborating Proposition [[prop:admissible-test-characterization]]
+     I modify the proposition's exposition to make it a bit more digestible.
+   
+     First, let's define the following. 
+     #+BEGIN_defi
+     Let $\{f_\theta(x)\}_{\theta \in \Theta}$ be a statistical model. We say that 
+      \[ f_{\theta_0} \ll f_{\theta_1} \]
+      \noindent (in plain English: $f_{\theta_0}$ is /dominated/ by $f_{\theta_1}$) if, for every
+      measurable set $A$,
+      \[ \mathbf P_{\theta_1}(A) = 0 \implies \mathbf P_{\theta_0}(A) = 0 \]
+     #+END_defi
+     
+     *Important remark.* The relation $\ll$ has /nothing/ to do with risk, loss,
+     etc. It also has nothing to do with stochastic dominance.
+     
+     Let's translate the definition above. What it means for $f_{\theta_0}$ to
+     be dominated by $f_{\theta_1}$ is that, if the statistical model under
+     $\theta_1$ assigns zero probability to a set $A$ -- that is, there is a
+     zero probability that we observe data in the set $A$ under the alternative
+     -- then the probability that we observe data in the set $A$ under the null
+     must also be zero.
+     
+     In other words, if that condition didn't hold, there would be a set of data
+     realizations that are ``impossible'' under the alternative, but ``possible''
+     under the null.
+
+     Note that we can rewrite the definition in terms of integrals, since
+     \[ \mathbf P_\theta(A) = \int_A f_\theta(x) dx \]
+     
+     Hence, $f_{\theta_0} \ll f_{\theta_1}$ if and only if
+     \[ \int_{A} f_{\theta_1} (x) dx = 0 \implies \int_A f_{\theta_0}(x) dx = 0 \]
+     
+     Or yet (by contraposition): $f_{\theta_0} \ll f_{\theta_1}$ iff 
+     \[ \int_{A} f_{\theta_0} (x) dx > 0 \implies \int_A f_{\theta_1}(x) dx > 0 \]
+     
+     All of these are restatements of the assumption that we can't observe
+     under the null things that can't be observed under the alternative. 
+     
+     That assumption gives us an important result, that I state as a lemma. 
+     #+NAME: lemma:trivialrisk
+     #+BEGIN_lemma
+     Let $\{f_\theta\}_{\theta \in \Theta}$ be a statistical model with $\Theta = \{\theta_0, \theta_1\}$.
+     Suppose $f_{\theta_0} \ll f_{\theta_1}$. 
+  
+     Then any test $\phi$ achieving full power must have size equals one. Mathematically: 
+     \[  \mathbf E_{\theta_1}[\phi(X)] = 1 \implies \mathbf E_{\theta_0}[\phi(X)] = 1\]
+     
+     Moreover, tests achieving zero size must have trivial power: 
+     \[ \mathbf E_{\theta_0}[\phi(X)] = 0 \implies \mathbf E_{\theta_1}[\phi(X)] = 0\]
+     #+END_lemma
+     
+     #+BEGIN_proof
+     Since $\phi(X) \leq 1$, full power -- ie $\mathbf E_{\theta_1}\phi(X) = 1$ -- implies that the set 
+     $A = \{x \in \mathcal X: \phi(x) < 1 \}$ has zero probability under $\theta_1$. Thus
+     \[ \int_{\phi(x)<1} f_{\theta_1}(x) dx  = 0\] 
+     
+     Since $f_{\theta_0}$ is dominated by $f_{\theta_1}$,  
+     \[\mathbf E_{\theta_0} \phi(X) = \int_{\{\phi(x) = 1\}} \phi(x) f_{\theta_0}(x)dx + \cancelto{0}{\int_{\{\phi(x) < 1\}} \phi(x) f_{\theta_0}(x)dx} = 1\]
+     #+END_proof
+     
+     I'll now restate one directions of Proposition 1, for the particular case when $0 < \alpha < 1$.
+     #+BEGIN_prop
+     Let $\{f_\theta\}_{\theta \in \Theta}$ be a statistical model with $\Theta = \{\theta_0, \theta_1\}$.
+     
+     Suppose $f_{\theta_0} \ll f_{\theta_1}$. Then any (randomized) test
+     $\phi^*$ that solves the problem below is admissible in a decision problem with 0-1
+     loss, when $\alpha \in (0, 1)$.
+     \[\tag{P}\begin{aligned} &\max_{\phi} && E_{\theta_1} \phi(X) \\
+     & \text{s.t.} && E_{\theta_0} \phi(X) \leq \alpha 
+     \end{aligned}\]
+     #+END_prop
+     
+     #+BEGIN_proof
+     Let's proceed by contradiction. Assume that $\phi^*$ solves the
+     maximization problem but is not admissible. Then there exists some test
+     $\phi$ that dominates $\phi^*$, that is:
+     
+     #+NAME: eq:lower_risk_null
+     \begin{equation} 
+      R(\phi, \theta_0) = \mathbf E_{\theta_0} [\phi(X)] \leq \mathbf E_{\theta_0}[\phi^*(X)] = R(\phi^*, \theta_0)
+     \end{equation}
+     
+     #+NAME: eq:lower_risk_alt
+     \begin{equation} 
+      R(\phi, \theta_1) = 1 - \mathbf E_{\theta_1}[\phi(X)] \leq 1 - \mathbf E_{\theta_1}[\phi^*(X)] = R(\phi^*, \theta_1) 
+     \end{equation}
+     where one of the equalities holds strictly. We consider the two cases below. 
+     1. Suppose [[eq:lower_risk_null]] holds strictly, and [[eq:lower_risk_alt]] holds weakly. 
+        Since $\phi^*$ solves the maximization problem (P), the size constraint must
+        be satisfied so
+        \[ \mathbf E_{\theta_0} [\phi(X)] < \mathbf E_{\theta_0}[\phi^*(X)] \leq \alpha < 1  \]
+        This first thing to note, which will only be used later on, is that since
+        $\mathbf E_{\theta_0} [\phi(X)] < 1$, it must be that
+        $\mathbf E_{\theta_1}[\phi(X)] < 1$ by the first part of
+        Lemma [[lemma:trivialrisk]].
+        
+        The idea of the proof is to construct yet another test that will use up
+        the slack that $\phi$ has in the size constraint,
+        $\mathbf E_{\theta_0}[\phi(X)] < \alpha$, to achieve higher power.
+
+        We can do that by mixing $\phi$ with the test that rejects the null
+        for any realization,
+         \[  \phi_R(X) \equiv 1  \]
+        and by picking the right mix, we will increase power relative to $\phi$,
+        while still controlling for size. By [[eq:lower_risk_alt]], we will also
+        improve relative to $\phi^*$, a contradiction.
+        
+        Now how do we find that combination? Consider, for arbitrary
+        $\lambda\in[0,1]$, the test
+        \[ \phi_\lambda(X) \equiv \lambda \phi^R(X) + (1-\lambda) \phi(X)  \]
+        (Make sure you understand why we combine $\phi$ with $\phi^R$, in
+        particular why we don't combine $\phi^R$ with $\phi^*$.) Its rate of type I error is given by 
+        \[  \mathbf E_{\theta_0} [ \phi_\lambda (X) ]  = \lambda + (1-\lambda) E_{\theta_0} [\phi(X)]  \]
+
+        We pick $\bar\lambda$ that gives size exactly equal to $\alpha$ by setting 
+        \[ \bar\lambda = \frac{\alpha - \mathbf E_{\theta_0}[\phi(X)]}{1 - \mathbf E_{\theta_0}[\phi(X)]} \]
+        
+        Since $0 \leq E_{\theta_0}[\phi(X)] < \alpha < 1$, we have $\bar\lambda\in(0,1)$. 
+        
+        By construction, $\phi_{\bar \lambda}$ has a rate of type I error of
+        exactly $\alpha$. Its power on the other hand is given by 
+        \[ \mathbf E_{\theta_1} [ \phi_{\bar\lambda}(X) ] = \bar\lambda \cdot 1 + (1-\bar\lambda) \cdot \mathbf E_{\theta_1} [\phi(X)] \]
+        
+        Because $\mathbf E_{\theta_1}[\phi(X)] < 1$ and $\bar\lambda \in (0,1)$, the above expression implies
+        \[ \mathbf E_{\theta_1}[\phi_{\bar\lambda}(X)] > \mathbf E_{\theta_1}[\phi(X)] \geq \mathbf E_{\theta_1}[\phi^*(X)] \]
+         
+        Where the last inequality comes from the assumption ([[eq:lower_risk_alt]]). That is a contradiction with the
+        fact that $\phi^*$ is solves problem (P).
+     2. Suppose now that ([[eq:lower_risk_alt]]) holds strictly, while
+        ([[eq:lower_risk_null]]) holds weakly. Then ([[eq:lower_risk_null]]) implies
+        $\phi$ satisfies the size constraint, and 
+        \[ \mathbf E_{\theta_1}[\phi(X)] > \mathbf E_{\theta_1}[\phi^*(X)] \]
+        implies that $\phi$ achieves strictly higher power than $\phi^*$, in
+        direct contradiction with the fact that $\phi^*$ solves problem (P).
+     #+END_proof
+      
+      
+    
 * Footnotes
 
 [fn:2] See the appendix on the trace operator for details.
