@@ -15,7 +15,7 @@
    Schedule: 
    | what           | when                | where                           |
    |----------------+---------------------+---------------------------------|
-   | *Recitation*   | Monday 13:10-14:25  | 227 Seeley W. Mudd building     |
+   | *Recitation*   | See syllabus        | 227 Mudd / 403 IAB              |
    | *Office hours* | Tuesday 09:00-10:00 | Lehman Library group study area |
   
    You can find lectures, slides and problem sets in the [[https://jm4474.github.io/Courses-IntroEconometrics-Ph.D/][class page]]. 
