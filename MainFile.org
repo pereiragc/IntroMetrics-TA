@@ -698,49 +698,7 @@
        + Important: optimization in space $\mathcal A$ is easier than in  the space of all $d:\mathfrak X \to \mathcal A$!
        
 ** Recitation 5
-*** Estimation
-    #+ATTR_beamer: :overlay +-
-    - Estimation refers to the case when $\mathcal A = \Theta$
-      - Interpretation: ``action'' is to guess the correct parameter
-    - Common loss function:
-      \[ \mathcal L(a, \theta) = \| a - \theta \|^2\]
-    - Decision rule here called *estimator*
-    - Example: *Maximum likelihood estimator* 
-         \[ \hat\theta (x) = \max_{\theta \in \Theta} f_\theta(x) \]
-
-*** Bayes estimation
-    - A Bayes estimator for $\theta$ is a decision rule $\hat\theta$ that minimizes Bayes risk for some prior $\pi(\theta)$
-**** Bayes rule for squared error loss
-     If $\mathcal L(a,\theta) = \|a-\theta\|^2$, then the Bayes rule $\thetabayes(x)$ for a prior $\pi(\theta)$ satisfies 
-     \[\thetabayes(x) =  \mathbf E \left( \theta | x \right) \]
-     where the expectation above is taken with respect to 
-     \[ f(\theta | x) := \frac{f_\theta(x) \pi(\theta)}{\int_\Theta f_\theta(x) \pi(\theta) d\theta } \]
-     In other words, 
-     \[ \thetabayes(x) = \int_\Theta \theta f(\theta|x) d\theta  \]
-*** Bayes estimation
-    #+attr_beamer: :overlay +-
-    - What is the previous slide saying?
-      1) The optimal decision rule is the integral shown
-      2) One can *interpret* that as a posterior mean
-*** Bayes estimation
-    - Result shown for posterior mean is actually more general
-    - Says that Bayes rule minimizes posterior loss
-    - If loss function is different, minimal posterior loss could mean: 
-      + Posterior mode
-      + Posterior median
-      + etc...
-*** Bayes estimation
-    #+attr_beamer: :overlay +-
-    - Proof that $\thetabayes=\mathbf E(\theta|x)$
-    - Relies on the following principle:
-      + Let $F:\mathbf R^k \times \mathfrak X \to \mathbf R$ be some function
-      + Suppose we're trying to find a *function* $u^*(x)$ such that
-        \[ u^*(\cdot) = \arg\min_{u(\cdot)} \int_\mathfrak X F(u(x),x) \phi(x) dx   \]
-      + Then one option is to pick for every $x \in \mathfrak X$,
-        \[ u^*(x) =  \arg\min_{u \in \mathbf R^k} F(u,x) \]
-    - Rest of the proof: board
-
-    
+** Recitation 6
 ** Unsorted
    :PROPERTIES: 
    :EXPORT_FILE_NAME: notes/unsorted-notes.pdf
@@ -941,7 +899,6 @@
 
     
 
-      
 *** Admissible tests and maximization of power subject to size (WIP)
     In lecture notes 9-10, Proposition 1 characterizes admissible tests in terms
     of the solution of an problem of maximizing power subject to a size
