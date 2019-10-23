@@ -698,7 +698,283 @@
        + Important: optimization in space $\mathcal A$ is easier than in  the space of all $d:\mathfrak X \to \mathcal A$!
        
 ** Recitation 5
+   :PROPERTIES: 
+   :EXPORT_FILE_NAME: notes/Recitation5.pdf
+   :OPTIONS: toc:nil
+   :EXPORT_TITLE: Intro to Econometrics: Recitation 5 
+   :EXPORT_SUBTITLE: A quick introduction to vector calculus
+   :EXPORT_LATEX_HEADER: \input{../auxfiles/header_basic.tex}
+   :END:
+   
+*** Intro
+    In these notes I try to introduce some notation regarding calculus with
+    functions that map vectors into vectors. One reason why things get a bit
+    messy is that when we write $x\in\mathbf R^N$ we don't distinguish between
+    \[ \begin{bmatrix} x_1  & \cdots & x_N \end{bmatrix} \]
+    and
+    \[ \begin{bmatrix} x_1  \\ \vdots \\ x_N \end{bmatrix} \]
+    but crucially, the operation $L(\mathbf x)$ where $L$ is a linear map is
+    represented differently by means of matrix multiplication notation; in the
+    top case, $L(x)$ corresponds to a matrix acting on $x$ ``on the right'',
+    whereas in the bottom case, the matrix acts ``on the left''. Of course,
+    there is an operation that takes us from the ``row world'' to the ``column
+    world'': transposition.
+    
+    Since derivatives are in fact linear maps, losing track of which side the
+    derivative matrix operates on can lead to dimension inferno. So here I
+    provide a few examples that might shed light on how to deal with this. 
+    
+    
+*** The meaning of a derivative
+    It will be useful to recall how derivatives and linear maps are connected.
+    Because these aren't notes in analysis, I won't be as general as I could,
+    neither will I provide any proofs. For proofs and generalizations, check any
+    undergraduate real analysis textbook. I also assume that you are familiar
+    with linear maps and their connection with matrix operations.
+    
+
+    Now let's recall the definition of a derivative. 
+    #+BEGIN_defi
+    Let $F:\mathbf R^n\to\mathbf R^p$. The function $f$ is called differentiable
+    at $x_0 \in \mathbf R^n$ if there exists a linear map $L:\mathbf R^n \to \mathbf R^p$ such that 
+    \[  \lim_{h\to0} \frac{\|F(x_0+h) - F(x_0) - L(h)\|}{\|h\|} = 0    \] 
+    
+    we will denote $L = DF(x_0)$. The linear map $DF(x_0)$ is called the /derivative/ of $F$.
+    #+END_defi
+    
+    An important thing to note is that $DF(x_0)$ is a linear map, so it applies
+    to vectors in $\mathbf R^n$. This leaves us with the awkward notation 
+    \[ L(h) = DF(x_0)(h) \]
+    which becomes (maybe?) a bit less ambiguous by adding even more parentheses: 
+    \[ L(h) = (DF(x_0))(h) \] 
+    
+    It is sometimes useful to divide $\mathbf R^n$ into two sets of coordinates,
+    say $\mathbf R^n = \mathbf R^{n_1} \times \mathbf R^{n_2}$, so we study
+    functions like $F(x,y)$. The partial derivative with respect to the first
+    set of $n_1$ coordinates, evaluated at $(x_0, y_0)$, is denoted
+    $D_1 F(x_0,y_0)$. It just means the derivative of the map 
+    \[ x \mapsto F(x, y_0) \]
+    evaluated at $x_0$ (whenever it exists). Whenever we consistently
+    refer to the first set of coordinates as $x$, we can also write 
+     \[ D_x F(x_0, y_0) \]
+    to denote the same partial derivative.
+    
+    One important caveat is that both $D_x F(x_0, y_0)$ and $D_y F(x_0, y_0)$
+    might be defined at a point where $F$ is not differentiable.
+    
+    
+**** Facts about derivatives to have in mind
+     I state a proposition that summarizes all that I will use about
+     derivatives. As mentioned earlier, I don't give any proofs but they should
+     be contained in any basic real analysis textbook.
+     #+BEGIN_thm
+     Let $F_1:\mathbf R^n\to\mathbf R^p$ and $F_2:\mathbf R^n\to\mathbf R^P$ be
+     differentiable at $x_0 \in \mathbf R^n$, and let $G:\mathbf R^k\to\mathbf R^n$ be
+     differentiable $z_0$, where $x_0 = G(z_0)$.
+     Then:
+     1. $F(x) = F_1(x) + F_2(x)$ is differentiable at $x_0$ and $DF(x_0) = DF_1(x_0) + DF_2(x_0)$
+     2. $H(z) = F_1(G(z))$ is differentiable at $z_0$ and $DH(z_0) = DF_1(x_0)\circ DG(z_0)$
+     #+END_thm
+
+     [TODO: More in-depth about meaning of the two items. Especially the composition
+     above, and the fact that $DH(z_0)$ is a linear map.]
+     
+     #+BEGIN_thm
+     Let $g_1:\mathbf R^m\to\mathbf R^{n_1}$ and $g_2:\mathbf R^m\to\mathbf R^{n_2}$
+     both be differentiable at $t_0 \in \mathbf R^m$. Let
+     $F:\mathbf R^{n_1} \times \mathbf R^{n_2} \to \mathbf R^p$ be differentiable at
+     $(x_0, y_0) = (g_1(t_0), g_2(t_0))$.
+
+     Then 
+     \[ \phi(t) = F(g_1(t), g_2(t)) \]
+     is differentiable at $t_0$, and 
+     \[ D\phi(t_0) = D_x F(x_0, y_0)\circ Dg_1(t_0) +  D_y F(x_0, y_0) \circ Dg_2(t_0) \]
+     #+END_thm
+     
+*** Seven examples  
+    TODO: finish
+    
+    1. Take $f_1(x) = Ax$. What is the derivative of $f_1$? Take $L(h) = Ah$.
+       \[ f_1(x+h) - f_1(x) - L(h) \equiv 0\]
+       hence $Df_1(x) = A$ for all $x$.
+       
+       Importantly, we specified the action above but it's good to repeat it: $(Df_1(x))(h) = Ah$. 
+       
+       That is, the derivative is $A$ and the action is on the left.
+    2. Let $f_2(x) = x'B$. Take $T(h) = h' B$. 
+    
 ** Recitation 6
+   :PROPERTIES: 
+   :EXPORT_FILE_NAME: notes/Recitation6.pdf
+   :EXPORT_OPTIONS: toc:nil H:2
+   :EXPORT_TITLE: Intro to Econometrics: Recitation 6
+   :EXPORT_SUBTITLE: Hansen chapters 1-5
+   :EXPORT_LATEX_HEADER: \input{../auxfiles/header_beamer.tex}
+   :END:
+   
+*** Intro
+**** Roadmap
+     Hansen chapters 2-5 overview
+     * Chapter 2
+       - Projection
+       - Conditional expectation
+       - Best linear predictor and linear regressions
+
+*** Chapters 1-5
+**** Chapter 2
+     #+BEAMER: \framesubtitle{Projection}
+
+     - <1-> Take $Y$ scalar rv and $\bfX = (X_1, \ldots, X_n)$. Consider following spaces:
+       \[\mathcal L(\bfX) =  \{\hat Y : \hat Y = \sum_{i=1}^n  \beta_i X_i \} \]
+       \[\mathcal E(\bfX) =  \{\hat Y : \hat Y = f(\bfX) \} \]
+       #+BEAMER:\vspace{-0.4cm}
+     - <2-> Let's restrict our analysis to variables $Y, X$ such that $E[|Y|^2] <\infty$ and $E[\|\bfX\|^2] < \infty$. Moreover, 
+       assume $\mathbf E[\bfX\bfX'] > 0$
+     - <3-> That way the inner product $\langle X, Y \rangle := \mathbf E(YX)$ is well defined
+       
+**** Chapter 2
+     #+BEAMER: \framesubtitle{Projection}
+     - <1-> With that inner product: what's projection of $Y$ (scalar valued) on $\mathcal L(\bfX)$?
+     - <2-> Orthogonality condition: $\langle Y -  \bfX'\beta^*, \bfX'\beta\rangle = 0$ for all $\beta$
+     - <3-> Implies:
+       1. $\beta^* = \mathbf E[\bfX \bfX']^{-1} \mathbf E[\bfX' Y]$
+       2. Error term associated with projection is uncorrelated with $\mathbf X$. Let $u^* = Y - \bfX'\beta^*$ 
+          \[ \langle u^*, \bfX\rangle = \mathbf E[u^* \bfX] = 0\]
+          
+**** Chapter 2
+     #+BEAMER: \framesubtitle{Projection}
+     - <1-> How about the projection of $Y$ on $\mathcal E(\bfX) =  \{\hat Y : \hat Y = f(\bfX) \}$
+     - <2-> It's a /function/ $f^*(\bfX)$ such that for any function $f$,
+       \[  \langle Y - f^*(\bfX) , f(\bfX) \rangle = 0\] 
+       #+BEAMER: \vspace{-0.4cm}
+     - <3-> The function 
+       \[ f^*(\bfX) = \mathbf E[ Y | \bfX ] \]
+       satisfies the orthogonality conditions. (Check!)
+     - <4-> Residual $u^*$ satisfies exogeneity $\mathbf E[u^* | X]= 0$
+       
+**** Chapter 2
+     #+BEAMER: \framesubtitle{Projection}
+     - Take away:
+       1. <1-> For any variables $(Y, \bfX)$, you can /always/ find $\beta^*$ such that 
+          \[ Y = \bfX\beta^* + u^* \] 
+          and $E[u^* \bfX] = 0$ 
+       2. <2-> You can always write 
+          \[ Y = f^*(\bfX) + u^* \]
+          where $\mathbf E[u^*|X] = 0$
+**** Chapter 2
+     #+BEAMER: \framesubtitle{Projection}
+     - <1-> Wait a second: /how about all the resources people spend trying to argue for `exogeneity'/?
+       - <2-> The point is /exactly/ that in empirical applications, estimating
+         \[ y_i  = x_i'\beta + u_i\] 
+         will give you $\beta^*$ in the limit
+       - <3-> Sometimes $\beta^*$ is not the object of interest, but 
+         \[ y_i  = x_i' \tilde \beta + v_i\]
+         where $\mathbf E[x_i v_i] \ne 0$
+**** Chapter 3 
+     #+BEAMER: \framesubtitle{Least Squares Algebra}
+     - <1-> Data $(y_i, \bfx_i)$, $i=1,\ldots, n$ identically distributed from some joint distribution $F$
+     - <2-> Least squares problem: 
+       \[ \min_\beta \sum_{i=1}^n (y_i - \bfx_i' \beta)^2 \] 
+     - <3-> In matrix notation: 
+       \[ \min_{\beta} \|\bfy - \bfX\beta\|^2 \]
+     - <4-> Solution: $\hat\beta = (\bfX'\bfX)^{-1}\bfX'\bfy$
+     - <5-> Orthogonality condition: $\bfX' [\bfy - \bfX \hat\beta] = 0$
+**** Chapter 3
+     #+BEAMER: \framesubtitle{Least Squares Algebra}
+     - Notation: 
+       \[ \begin{aligned}
+       \bfQxxhat &=\frac{1}{n} \bfX'\bfX = \sum_{i=1}^n \bfx_i x_i' \\
+       \bfQxyhat &=\frac{1}{n} \bfX'\bfy = \sum_{i=1}^n \bfx_i y_i \\
+       \bfP &= \bfX (\bfX'\bfX)^{-1} \bfX' \\
+       \bfM &= \idd_n - \bfP = \idd_n - \bfX (\bfX ' \bfX)^{-1} \bfX'
+       \end{aligned}\]
+**** Chapter 3
+     #+BEAMER: \framesubtitle{Least Squares Algebra}
+     - Note:
+       \[\begin{aligned} \bfy &= \bfX\hat\beta + \overbrace{(\bfy - \bfX\hat\beta)}^{\text{LS residuals}} \\
+            &= \bfX (\bfX'\bfX)^{-1} \bfX'\bfy + \left[\bfy - \bfX(\bfX'\bfX)^{-1} \bfy \right] \\ 
+            &= \bfP \bfy + \bfM \bfy\end{aligned} \] 
+     - Hence $\bfP \bfy$ is the predicted part and $\bfM \bfy$ is the residual
+     - Matrices $\bfP$ and $\bfM$ are both /symmetric/, and satisfiy: 
+       \[\begin{aligned} \bfP \bfP &= \bfP \\  
+                         \bfM \bfM &= \bfM \\
+                         \bfP \bfM &= \bfM \bfP = \mathbf 0 \\
+                         \bfP \bfX &= \bfX  \\ 
+                         \bfM \bfX &= \mathbf 0 \end{aligned}\]
+**** Chapter 3
+     #+BEAMER: \framesubtitle{Least Squares Algebra}
+     - Let's apply this machinery. Two components:
+       \[ y_i = \bfx_{1i}' \beta_1 + \bfx_{2i}'\beta_2 + u_i \]
+     - <2-> In matrix notation: 
+       \[   \bfy = \bfX_1 \beta_1 + \bfX_2 \beta_2 + \bfu  \]
+     - <3-> At the least squares solution, 
+       \[ \bfy = \bfX_1 \hat\beta_1 + \bfX_2 \hat\beta_2 + \bfe \] 
+       where 
+       \[ \mathbf 0 = \bfX' \bfe = \begin{bmatrix} \bfX_1' \\ \bfX_2' \end{bmatrix} \bfe  \] 
+**** Chapter 3
+     #+BEAMER: \framesubtitle{Least Squares Algebra}
+     - Define $\bfP_j, \bfM_j$ for $j=1,2$ accordingly
+     - Suppose we want to find expression for $\hat\beta_1$. Can get rid of $\bfX_2$ by multiplying $\bfM_2$!
+       \[ \bfM_2 \bfy = \bfM_2 \bfX_1\hat\beta_1 + \bfM_2 \bfX_2 \hat\beta_2 + \bfM_2 \bfe  \]
+     - Note: $\bfM_2 \bfe = \bfe - \bfX_2(\bfX_2'\bfX_2)^{-1} \bfX_2' \bfe = \bfe$
+     - Hence 
+       \[ \bfM_2 \bfy = \bfM_2 \bfX_1 \hat\beta_1 + \bfe \]
+**** Chapter 3
+     #+BEAMER: \framesubtitle{Least Squares Algebra}
+     - <1-> Denote $\tilde \bfy = \bfM_2 \bfy$ and $\tilde \bfX_1 = \bfM_2 \bfX_1$
+     - <2-> We have 
+       \[ \tilde \bfy = \tilde \bfX_1 \hat\beta_1 + \bfe \] 
+       Moreover, 
+       \[\tilde \bfX_1' \bfe = \bfX_1' \bfM_2 \bfe = \mathbf 0\]
+       Thus (as long as $\tilde X_2$ is full row rank):
+       \[\hat\beta_1 = (\tilde \bfX_1'\tilde \bfX_1)^{-1} \tilde \bfX_1' \bfy = (\bfX_1' \bfM_2 \bfX_1)^{-1} \bfX_1'\bfM_2 \bfy \]
+     - <3-> Interpretation? Frisch-Waugh-Lovell
+**** Chapter 4
+     #+BEAMER: \framesubtitle{Least squares: statistical models}
+     - <1-> Data $(y_i, \bfx_i)$ independently drawn from $F(y, \bfx)$
+     - <2-> Statistical model will put further restrictions on $F$.
+     - <3-> Note: not assuming deterministic $\mathbf x_i$ anymore. Analysis will strongly rely on conditioning
+**** Chapter 4
+     #+BEAMER: \framesubtitle{Least squares: statistical models}
+     - <1-> Depending on what properties you want to get for OLS, different assumptions are required
+       1. <2-> *Linear regression model.*
+          - $\mathbf E[y_i | \bfx_i] = \bfx_i' \beta$ 
+          - Finite second moments, and $\mathbf E[\bfx_i \bfx_i']$ invertible
+     - <3-> With the above assumption, we get an unbiased OLS estimator.
+     - <4-> What about `optimality' in any sense? Need restriction on second moments.
+**** Chapter 4
+     #+BEAMER: \framesubtitle{Least squares: statistical models}
+     - Another assumption: 
+       2. [@2] *Homoskedasticity.* In addition to linear regression hypohtesis,
+          \[ \mathbf V[y_i| \bfx_i] \equiv \sigma^2 \] 
+          
+     - Then we get the Gauss-Markov result.
+***** Gauss-Markov 
+      :PROPERTIES: 
+      :BEAMER_env: theorem
+      :BEAMER_opt: shadow=true
+      :END:
+      In the homoskedastic linear regression model, $\hat\beta$ is the best
+      linear unbiased estimator of $\beta$ (with $L^2$ loss).
+      
+      That means that any other unbiased estimator $\tilde \beta = \tilde A\bf y$ satisfies 
+      \[ \mathbf V[\tilde \beta | \bfX ] \geq \mathbf V[\hat\beta | \bfX]\]
+**** Chapter 4
+     #+BEAMER: \framesubtitle{Least squares: statistical models}
+     - When homoskedasticity is not assumed, we can sometimes do better than OLS
+     - For example, if we abandon the iid assumption, and instead only impose finite second moments and 
+       \[  \mathbf E[\bfy | \mathbf X] = \mathbf X\beta  \]
+       \[  \mathbf V[\bfy | \mathbf X] = \Omega  \]
+     - If $\Omega$ is known, the /Generalized Least Squares estimator/ is the way to go.
+**** Chapter 4
+     #+BEAMER: \framesubtitle{Least squares: statistical models}
+     - Another important case that we frequently find in applied work:
+       \[  \mathbf V[y_i | \bfx_i] = \varsigma(x_i)^2 = \sigma_i^2 \]
+     - With the above form for residual variace, we have a /heteroskedastic linear regression model/ 
+**** Chapter 4
+     #+BEAMER: \framesubtitle{Least squares: variance estimation}
+     - TBI
+     
 ** Unsorted
    :PROPERTIES: 
    :EXPORT_FILE_NAME: notes/unsorted-notes.pdf
@@ -1075,7 +1351,7 @@
      #+END_proof
       
       
-    
+     
 * Footnotes
 
 [fn:2] See the appendix on the trace operator for details.
