@@ -4,6 +4,7 @@
 \usepackage[left=3cm, right=3cm,bottom=3cm]{geometry}
 \usepackage{cancel}
 \usepackage{setspace}
+\usepackage{thmtools}
 \onehalfspacing
 \newcommand{\tr}{\text{tr}}
 \newcommand{\expval}{\mathbf E}
@@ -16,9 +17,9 @@
 \newcommand{\distto}{\overset{d}{\to}}
 \newcommand{\rcol}{\mathbf R}
 \newcommand{\rrow}{\hat{\mathbf R}}
-\theoremstyle{theorem}
+\theoremstyle{thm}
 \newtheorem{lemma}{Lemma}
 \newtheorem{thm}{Theorem}
 \newtheorem{prop}{Proposition}
 \theoremstyle{definition}
-\newtheorem{defi}{Definition}
+\declaretheorem[name=Definition,qed={\lower-0.3ex\hbox{$\triangleleft$}}]{defi}
