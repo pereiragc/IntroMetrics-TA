@@ -48,7 +48,7 @@
    - I don't have to answer the same thing over and over :)
 
      #+LATEX: \clearpage
-** Pset 1
+** First half - pset 1
     
 *** About limits of sets, and Durrett and Billingsley being wrong
     #+begin_quote
@@ -106,7 +106,7 @@
     
     Gustavo
 
-** Pset 4
+** First half - pset 4
    
 *** Clarifying the meaning of posterior in Q3
     #+begin_quote
@@ -166,6 +166,21 @@
     this variance does not depend on $\beta$.
     
     
+** Second half - pset 1
+*** Approaching Q8 
+    #+begin_quote
+    Could you give us a hint about Q8? We're trying to solve it for a while and we don't even know how start.
+    #+end_quote
+   
+
+    It might be useful to write 
+    \[  (T_n - \theta) = A_n B_n  \]
+
+    where $A_n = \frac{1}{\sqrt{n}}$ and $B_n = \sqrt{n} (T_n - \theta)$. 
+
+    Any deterministic sequence $A_n \to A$ also satisfies $A_n \overset{d}{\to} A$. Can you say something about $A_nB_n$?
+   
+   
 * Notes
 ** Recitation 1
    :PROPERTIES: 
