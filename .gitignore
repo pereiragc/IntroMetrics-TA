@@ -3,3 +3,4 @@ private/
 auto/
 ltximg/
 *.tex
+!Solution_midterm.tex
