@@ -34,6 +34,7 @@
   :EXPORT_FILE_NAME: outside_oh_questions.pdf
   :EXPORT_TITLE: Out-of-OH Q&A   
   :EXPORT_AUTHOR: Gustavo Pereira
+  :EXPORT_LATEX_HEADER: \input{auxfiles/header_basic.tex}
   :EXPORT_OPTIONS: ^:nil
   :END: 
 ** Why
