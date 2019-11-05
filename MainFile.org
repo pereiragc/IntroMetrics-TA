@@ -170,7 +170,7 @@
 ** Second half - pset 1
 *** Approaching Q8 
     #+begin_quote
-    Could you give us a hint about Q8? We're trying to solve it for a while and we don't even know how start.
+    Could you give us a hint about Q8? We've been trying to solve it for a while now and we don't even know how start.
     #+end_quote
    
 
