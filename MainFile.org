@@ -178,7 +178,7 @@
 
     Any deterministic sequence $A_n \to A$ also satisfies $A_n \overset{d}{\to} A$. Can you say something about $A_nB_n$?
    
-   
+    
 * Notes
 ** Recitation 1
    :PROPERTIES: 
@@ -988,6 +988,235 @@
      #+BEAMER: \framesubtitle{Least squares: variance estimation}
      - TBI
      
+** Recitation 7
+** Recitation 8
+   :PROPERTIES: 
+   :EXPORT_FILE_NAME: notes/Recitation8.pdf
+   :EXPORT_TITLE: Intro to Econometrics: Recitation 8
+   :EXPORT_BEAMER_THEME: Boadilla
+   :EXPORT_LATEX_CLASS_OPTIONS: [presentation, smaller]
+   :EXPORT_OPTIONS: toc:nil H:2
+   :EXPORT_LATEX_HEADER: \input{../auxfiles/header_beamer.tex}
+   :END:
+*** Intro
+**** Roadmap for today
+     - Chapter 6 quick review:
+       + Asymptotic order notation
+       + The basic toolkit: CMT, delta method and limit theorems
+     - BH Chapter 7: 
+       + Asymptotic properties in the LP/LR model
+*** Asymptotic order notation
+**** Asymptotic order notation
+     #+BEAMER: \framesubtitle{Deterministic sequences}
+     - <1-> Consider the claim:
+       #+BEAMER: \vspace{0.3cm}
+       
+       #+begin_quote
+       ``The sequence $a_n=n^2$ diverges to infinity an order of magnitude faster than $b_n=n$''
+       #+end_quote
+       - <1-> How do we make this rigorous?
+     - <2-> ``$|a_n - b_n|$ gets large'' is not a good idea; e.g. $a_n = 5n$, $b_n=n$
+     - <3-> Let $r_n = \frac{a_n}{b_n}$:
+       + <4-> $a_n \in O(b_n) \iff |r_n|$ is bounded
+       + <5-> $a_n \in o(b_n) \iff |r_n| \to 0$
+     - <6-> Note: we're assuming for simplicity that $b_n > 0$
+         
+**** Asymptotic order notation
+     #+BEAMER: \framesubtitle{Deterministic sequences: examples}
+     - <1-> Convince yourself (or even better, give a proof) that:
+     
+       1. $n \in o(n^2)$
+
+       2. $log(n) \in O(n)$
+
+       3. $sin(n) \in O(1)$
+
+     - <2-> Also, for arbitrary (positive) $x_n$ and $y_n$,
+       1. <3-> $x_n \in O(x_n)$ but the same doesn't hold for $o(x_n)$
+       2. <4-> If $x_n \in O(An^2 + Bn + C)$, then $x_n \in O(n^2)$; moreover, $x_n \in o(n^3)$
+          - Similar fact for higher degree polynomials goes through
+       3. <5-> $x_n \in O(y_n)$ iff $x_n/y_n \in o(1)$; same for $O$
+       4. <6-> If $x_n \to x$, then $x_n \in O(1)$
+         
+**** Asymptotic order notation
+     #+BEAMER: \framesubtitle{Deterministic sequences: results}
+***** Lemma                                                         :B_block:
+      :PROPERTIES:
+      :BEAMER_env: block
+      :END:
+      For any positive sequences $x_n$, $y_n$, $z_n$ and $w_n$, 
+      1. If $x_n \in o(z_n)$ and $y_n \in o(w_n)$, then
+         \[ x_n y_n \in o(z_n w_n) \]
+         \[ x_n + y_n \in o(z_n + w_n) \]
+         and the same holds for $O$
+      2. If $x_n \in o(z_n)$ and $y_n \in O(w_n)$, then 
+         \[ x_n y_n \in o(z_n w_n) \]
+         \[ x_n + y_n \in O(z_n + w_n) \]
+**** Asymptotic order notation
+     #+BEAMER: \framesubtitle{Deterministic sequences: results}
+     - Proof: 
+       + First part of (1) follows from limit arithmetic
+       + First part of (2) is a consequence of the fact that $a_n \to 0$ and
+         $b_n$ bounded implies $a_n b_n \to 0$
+       + Second part of (1) and (2): use 
+         \[ \frac{x_n + y_n}{z_n + w_n} = \frac{x_n}{z_n} \frac{z_n}{z_n + w_n} + \frac{y_n}{w_n} \frac{w_n}{z_n + w_n} \]
+         
+         the ratio $z_n / (z_n + w_n) \in [0,1]$ is bounded
+**** Asymptotic order notation
+     #+BEAMER: \framesubtitle{Sequences of random variables}
+     
+     - <1-> Analogs: let $X_n$ be a sequence of random variables and $a_n$ a positive deterministic sequence
+       - $X_n \in O_p(a_n)$ iff $\dfrac{X_n}{a_n}$ is /stochastically/ bounded
+       - $X_n \in o_p(a_n)$ iff $\dfrac{X_n}{a_n} \probto 0$ 
+     - <2-> Definition of stochastically bounded.
+
+       For every $\delta>0$ there exists $M_\delta$ such that
+       \[ \Pr\{|X_n| \leq M_\delta \}  > 1-\delta \]
+     - <3-> Result: lemma goes through with $o$ and $O$ replaced with $o_p$ and $O_p$ 
+**** Asymptotic order notation
+     #+BEAMER: \framesubtitle{Sequences of random variables: an useful result}
+     A sequence $(X_n)$ that converges in distribution is necessarily $O_p(1)$
+     - <2-> _Proof_. Let $Y$ be st $X_n \distto Y$. Denote $F_Y$ and $F_n$ the CDF of
+       $Y$ and $X_n$, respectively. Fix $\delta > 0$.
+       - Let $M_\delta$ be such that 
+          \[ F_Y(M_\delta) - F_Y(-M_\delta) = \Pr\{Y \in (-M_\delta, M_\delta]\} > 1 - \frac{\delta}{2} \]
+          #+BEAMER: \vspace{-0.4cm}
+       - In addition, we can choose $M_\delta$ st $F_Y$ continuous at $M_\delta$ and $-M_\delta$ (why?)
+     - <3-> Convergence in distribution implies $F_n(M_\delta) \to F_Y(M_\delta)$ and $F_n(-M_\delta) \to F_Y(-M_\delta)$
+     - <4-> Hence for $n_0$ sufficiently large, $F_n(M_\delta) > F_Y(M_\delta) - \delta/4$ and 
+       $F_n(-M_\delta) < F_Y(-M_\delta) + \delta/4$ for all $n \geq n_0$
+     - <5-> That implies
+       \[ \Pr\{ | X_n | \leq M_\delta \} \geq F_n(M_\delta) - F_n(-M_\delta) > 1 - \delta\]
+*** Asymptotics toolkit
+**** The asymptotics toolkit
+     - You need to know the following by heart:
+       1. General results
+          - Continuous mapping  theorem
+          - Slutzky's theorem
+          - Delta method
+       2. Results about averages
+          - Law of large numbers
+          - Central Limit Theorem
+**** Continuous mapping theorem
+     - Let $F:U\to V$ have a set of discontinuities $U_0$
+     - If $X_n \distto X$ or $X_n \probto X$, then $F(X_n) \to F(X)$ as long as 
+       \[ \Pr \{ X \in U_0 \} = 0\]
+**** Slutzky's theorem
+     - If $X_n \distto X$ and $Y_n \probto c$ where $c$ is non-random, then 
+       1. $X_n + Y_n \distto X+c$
+       2. $X_n Y_n \distto cX$
+       3. $X_n/Y_n \distto X/c$ as long as $c > 0$
+     - These results follow from CMT, plus the fact that 
+       \[ (X_n, Y_n) \distto (X,c)\]
+       provided that $c$ is non-random.
+**** Delta method
+     - If $\mu$ is non-random,
+       \[ \sqrt{n}(X_n - \mu) \distto Z \]
+       and $g$ is differentiable at $\mu$, then 
+       \[ \sqrt{n} (g(X_n) - g(\mu)) \distto g'(\mu) Z \]
+     - Remarks.
+       1. No assumption about normality is needed for $Z$.  
+       2. The theorem goes through in the multivariate case
+          - Example: $F(\gamma_1, \gamma_2)=\gamma_1\gamma_2$
+**** Results about averages
+     - <1-> Let $\{X_i\}$ be sampled iid from some distribution. Denote 
+       \[ \bar X_n = \frac{1}{n} \sum_{i=1}^n X_i \]
+     - <2-> _Law of large numbers._ If $\{X_i\}$ are sampled iid from distribution with finite mean, then 
+       \[  \bar X_n \probto \expval X_1 \]
+     - <3-> _Central limit theorem._ If $\{X_i\}$ are sampled iid from distribution
+       with finite mean $\mu$ and variance $\sigma^2$,
+       \[ \sqrt{n} \left( \bar X_n - \mu \right) \distto Z \sim N(0, \sigma^2) \]
+**** Results about averages
+     - *Remark.* If $X_i$ have finite mean and variance, the central limit
+       theorem gives a bound on the rate of convergence of $\bar X_n$
+     - <2-> In fact: 
+       \[ \bar X_n - \mu = \frac{1}{\sqrt{n}} \left[  \sqrt{n} (\bar X_n - \mu ) \right] = O_p(n^{-1/2}) O_p(1) = O_p(n^{-1/2}) \]
+       
+     - <3-> Hence (with finite second moments) the convergence of $\bar X_n$ to
+       $\mu$ is no slower than $n^{-1/2}$ goes to $0$.
+*** OLS asymptotics
+**** OLS asymptotics: the linear projection model 
+     - Consider the following assumptions:
+       - (1) :: $(y_i, x_i)$ sampled iid
+       - (2) :: $\expval(y_i^2) < \infty$
+       - (2') :: $\expval(y_i^4) < \infty$
+       - (3) :: $\expval(\|x_i\|^2) < \infty$
+       - (3') :: $\expval(\|x_i\|^4) < \infty$
+       - (4) :: $\expval[x_i x_i']$ positive definite
+     - Notation: 
+       \[ \expval[x_i x_i' ] =: Q_{xx}  \]
+       \[ \expval[x_i y_i ] =: Q_{xy}  \]
+**** OLS asymptotics: the linear projection model 
+     - Results: 
+       1. Under (1), (2), (3) and (4), OLS is consistent for the population projection coefficient:
+          \[ \hat\beta = \left(\sum_{i=1}^n x_ix_i' \right)^{-1} \sum_{i=1}^n x_iy_i \probto  \beta := Q_{xx}^{-1} Q_{xy} \]
+          #+BEAMER: \vspace{-0.4cm}
+       2. Under (1), (2'), (3') and (4), OLS is asymptotically normal: 
+          \[ \sqrt{n}\left[ \left(\sum_{i=1}^n x_ix_i' \right)^{-1} \sum_{i=1}^n x_iy_i - \beta\right] \distto N\left( 0, Q_{xx}^{-1} \Omega Q_{xx}^{-1} \right)\]
+          - $\beta$ is again the population projection coefficient
+          - $\Omega = \expval[u_i^2 x_ix_i']$
+          - $u_i := y_i - x_i' \beta$
+     - Notation: 
+       \[ V_\beta = Q_{xx}^{-1} \Omega Q_{xx}^{-1} \]
+**** OLS asymptotics: the linear regression model
+     - <1-> Consider the following assumptions:
+       - (1) :: <1-> $(y_i, x_i)$ sampled iid
+       - (2) :: <1,3> $\expval(y_i^2) < \infty$
+       - (2') :: <2-> $\expval(y_i^4) < \infty$
+       - (3) :: <1,3> $\expval(\|x_i\|^2) < \infty$
+       - (3') :: <2-> $\expval(\|x_i\|^4) < \infty$
+       - (4) :: <1-> $\expval[x_i x_i']$ positive definite
+       - (5) :: <1-> $\expval(y_i | x_i) = x_i' \beta$
+       - (6) :: <3-> $\mathbf V\left[ y_i | x_i\right] \equiv \sigma^2$
+     - <1-> Assumptions (1), (2), (3), (4) and (5) are called the linear regression model
+     - <2-> Again (2') and (3') are required for asymptotic normality
+     - <3-> If (6) is assumed, we have the *homoskedastic* linear regression model
+**** OLS asymptotics: the linear regression model
+     - <1-> Finite sample variance of OLS:
+       \[ \hat\beta = (X'X)^{-1} X'Y \implies \mathbf V(\hat\beta | X) = (X'X)^{-1} X' \mathbf V(Y|X) X (X'X)^{-1}  \]
+     - <2-> $\mathbf V(Y|X)$ is a diagonal matrix. Why?
+     - <3-> Denote $D = \mathbf V(Y|X)$. Hansen defines: 
+       \[ V_{\hat\beta} = (X'X)^{-1} X'DX (X'X)^{-1} \]
+     - <4-> This is *not* the same thing as 
+       \[ V_\beta = Q_{xx}^{-1} \expval[u_i^2 x_ix_i'] Q_{xx}^{-1}\]
+       
+     - <5-> It is true however that 
+       \[ n V_{\hat\beta} \probto V_\beta\]
+       (why?)
+**** OLS asymptotics: estimating the limiting variance
+     - We know that the limiting variance of OLS in the LPM is 
+       \[  V_\beta = Q_{xx}^{-1} \Omega Q_{xx}^{-1} \]
+     - A valid estimator for $\Omega = \expval[u_i^2 x_i x_i']$ is 
+       \[ \hat \Omega =\frac{1}{n} \sum_{i=1}^n \hat u_i^2 x_i x_i' \]
+     - One estimator for $V_\beta$ is 
+       \[ \hat{V}_{\beta}^{\text{HC0}}  = \hat{Q}_{xx}^{-1} \hat\Omega \hat{Q}_{xx}^{-1} \]
+**** Prediction: regression intervals
+     - One object of interest in the LRM is 
+       \[ m(x) = \expval[y_i | x] = x'\beta \]
+       #+BEAMER: \vspace{-0.4cm}
+     - <2-> How does one estimate this function? Reasonable candidate is:
+       \[ \hat m(x)  = x' \hat\beta \]
+       #+BEAMER: \vspace{-0.7cm}
+     - <3-> Note that for fixed $x$,
+       \[ \sqrt{n} (\hat m(x) - m(x)) = x' \sqrt{n} (\hat\beta - \beta)  \distto N(0, x'V_\beta x) \]
+       so that
+       \[ \left( x' \hat V_\beta x \right)^{-1/2} \sqrt{n} [\hat m(x) - m(x)] \distto N(0,1)\]
+     - <4-> That motivates the approximation
+       \[  \hat m(x) \approx N\left(m(x), \frac{1}{n} x' \hat V_\beta x\right) \]
+**** Prediction: forecast errors
+     - <1-> Suppose you expect to obtain one additional data point: $(y_{n+1}, x_{n+1})$
+     - <2-> How would you predict $y_{n+1}$? Quadratic loss function implies best prediction is 
+       \[ y_{n+1}^* = \expval [y_i | x_{n+1}] = m(x_{n+1}) = x_{n+1}'\beta\]
+     - <3-> The above is infeasible; use plug-in estimate $\hat m(x)$
+       \[\tilde y_{n+1} =  x_{n+1}' \hat\beta \]
+     - <4-> Forecast error is 
+       \[ \tilde e_{n+1} = y_{n+1} - x' \hat\beta = x' \beta + e_i - x' \hat\beta  = e_{n+1} + x' (\beta - \hat\beta) \]
+       - The true regression has an error $e_{n+1}$
+       - In addition to that, there is an estimation noise coming from $\hat\beta$ being different than $\beta$
+**** Prediction: forecast errors
+    - Finite sample variance of $e_{n+1}$: 
+      \[ \expval [\hat e_{n+1}^2 | x_{n+1} ] = \sigma^2(x_{n+1}) + x_{n+1}' V_{\hat\beta} x_{n+1} \]
+    - Can we build a confidence interval for the forecast?
 ** Unsorted
    :PROPERTIES: 
    :EXPORT_FILE_NAME: notes/unsorted-notes.pdf
@@ -1187,7 +1416,6 @@
     square $[0,1]\times[0,1]$.
 
     
-
 *** Admissible tests and maximization of power subject to size (WIP)
     In lecture notes 9-10, Proposition 1 characterizes admissible tests in terms
     of the solution of an problem of maximizing power subject to a size
@@ -1362,8 +1590,6 @@
         implies that $\phi$ achieves strictly higher power than $\phi^*$, in
         direct contradiction with the fact that $\phi^*$ solves problem (P).
      #+END_proof
-      
-      
      
 * Footnotes
 
