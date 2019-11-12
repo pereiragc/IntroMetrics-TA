@@ -1,6 +1,7 @@
 #+TITLE: Fall 19: Intro to Econometrics TA material  
 #+AUTHOR: Gustavo Pereira
 #+STARTUP: beamer
+#+STARTUP: org
 
 
 * README page
@@ -18,14 +19,29 @@
    | *Office hours* | Tuesday 09:00-10:00 | Lehman Library group study area |
   
    Pull requests are encouraged!
-  
+   
+*** Recitations 
+
+**** Recitation 8
+     [[file:notes/Recitation8.pdf][Here]].
+
+     In this recitation I:
+     1) Introduced (stochastic) order notation, which can be useful to simplify
+        proofs about asymptotics later on
+     2) Reviewed the basic asymptotic machinery: CMT, Slutzky's theorem, Delta
+        method. 
+
+        I didn't focus on the proofs but some of them can be found in [[file:other_notes/N04_asymptotic_order.pdf][these notes]].
+     3) Talked about OLS asymptotics under different sets of assumptions. There
+        was no time to cover this in much detail so I strongly suggest you
+        should read BH chapter 7
+        
 *** Questions outside OH
-    See [[outside_oh_questions.pdf][here]]!
+    See [[file:outside_oh_questions.pdf][here]]!
 
       
 
    
-
 * Questions outside office hours
   :PROPERTIES: 
   :EXPORT_FILE_NAME: outside_oh_questions.pdf
