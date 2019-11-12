@@ -33,8 +33,8 @@
 
         I didn't focus on the proofs but some of them can be found in [[file:other_notes/N04_asymptotic_order.pdf][these notes]].
      3) Talked about OLS asymptotics under different sets of assumptions. There
-        was no time to cover this in much detail so I strongly suggest you
-        should read BH chapter 7
+        was no time to cover this in much detail so I strongly suggest you read
+        BH chapter 7
         
 *** Questions outside OH
     See [[file:outside_oh_questions.pdf][here]]!
