@@ -5,10 +5,10 @@
 
 
 * README page
+** Intro to Econometrics: TA repo
   :PROPERTIES: 
   :EXPORT_FILE_NAME: README.org
   :END:
-** Intro to Econometrics: TA repo
    Welcome! This repository was created to store and maintain the materials
    used or referred to in the recitations. 
   

@@ -1,7 +1,6 @@
-# Created 2019-11-12 Tue 11:31
-#+TITLE: README page
+# Created 2019-11-12 Tue 11:32
+#+TITLE: Intro to Econometrics: TA repo
 #+AUTHOR: Gustavo Pereira
-* Intro to Econometrics: TA repo
 Welcome! This repository was created to store and maintain the materials
 used or referred to in the recitations. 
 
@@ -13,9 +12,9 @@ Schedule:
 
 Pull requests are encouraged!
 
-** Recitations
+* Recitations
 
-*** Recitation 8
+** Recitation 8
 [[file:notes/Recitation8.pdf][Here]].
 
 In this recitation I:
@@ -29,5 +28,5 @@ In this recitation I:
    was no time to cover this in much detail so I strongly suggest you
    should read BH chapter 7
 
-** Questions outside OH
+* Questions outside OH
 See [[file:outside_oh_questions.pdf][here]]!
