@@ -1221,67 +1221,18 @@
        \[  \hat m(x) \approx N\left(m(x), \frac{1}{n} x' \hat V_\beta x\right) \]
 **** Prediction: forecast errors
      - <1-> Suppose you expect to obtain one additional data point: $(y_{n+1}, x_{n+1})$
-     - <2-> How would you predict $y_{n+1}$? Quadratic loss function implies best prediction is
+     - <2-> How would you predict $y_{n+1}$? Best predictor (under quadratic loss):
        \[ y_{n+1}^* = \expval [y_i | x_{n+1}] = m(x_{n+1}) = x_{n+1}'\beta\]
-     - <3-> The above is infeasible; use plug-in estimate $\hat m(x)$
+     - <3-> The above is not feasible; use plug-in estimate $\hat m(x)$
        \[\tilde y_{n+1} =  x_{n+1}' \hat\beta \]
      - <4-> Forecast error is
        \[ \tilde e_{n+1} = y_{n+1} - x' \hat\beta = x' \beta + e_i - x' \hat\beta  = e_{n+1} + x' (\beta - \hat\beta) \]
-       - The true regression has an error $e_{n+1}$
+       - The true (population) regression has an error $e_{n+1}$
        - In addition to that, there is an estimation noise coming from $\hat\beta$ being different than $\beta$
 **** Prediction: forecast errors
      - Finite sample variance of $e_{n+1}$:
        \[ \expval [\hat e_{n+1}^2 | x_{n+1} ] = \sigma^2(x_{n+1}) + x_{n+1}' V_{\hat\beta} x_{n+1} \]
      - Can we build a confidence interval for the forecast?
-** Unsorted
-   :PROPERTIES:
-   :EXPORT_FILE_NAME: other_notes/unsorted-notes.pdf
-   :EXPORT_TITLE: Unsorted notes
-   :EXPORT_LATEX_HEADER: \input{../auxfiles/header_basic.tex}
-   :EXPORT_OPTIONS: toc:nil
-   :END:
-
-   Here I store some random notes that I may or may note talk about during recitations.
-
-*** DISCARD: Comments on PS3, Q3: mixed vs behavioral strategies   :noexport:
-    Note that when the action space is $\mathcal A=\{a_0, a_1\}$ -- with
-    associated loss function $\mathcal L(a_i, \theta_j) = \mathbf 1(i \ne j)$ --
-    we have four possible strategies.
-
-    Let's call $\tilde A$ the set of decision rules: $\tilde A = \{d_1, d_2, d_3, d_4\}$,
-    as in the question.
-    The risk function evaluated at a given decision rule $d$ is simply a vector
-    \[\begin{bmatrix}
-    R(d, \theta_0) \\
-    R(d, \theta_1)
-    \end{bmatrix} \]
-
-    Let $D(\tilde A)$ denote the set of all points in $\mathbf R^2$ that are the
-    risk function of some decision rule. It was your job to show that
-    \[ D(\tilde A) = \Big \{ \overbrace{\begin{bmatrix} 0 \\ 1\end{bmatrix}}^{d_1},
-    \overbrace{\begin{bmatrix}  1-p_0 \\ p_1\end{bmatrix}}^{d_2},
-    \overbrace{\begin{bmatrix} p_0 \\ 1-p_1\end{bmatrix}}^{d_3},
-    \overbrace{\begin{bmatrix} 1 \\ 0\end{bmatrix}}^{d_4}
-    \Big \}\]
-    [Let's call this the /risk set/ associated with this decision problem.]
-
-
-    The problem set presented one way of ``randomizing risk''. Upon observing
-    data, in part 3 you allowed, instead of choosing any particular action in
-    $\mathcal A$, to choose a distribution over points in $\mathcal A$. Since
-    $\mathcal A$ is binary, this amounts to choosing a number $\delta \in [0,1]$
-    representing the probability of playing $a_0$. COMMENT: notation
-
-    So the new action space is $\mathcal A' = [0,1]$.
-
-
-    What is then a decision rule in this context? Again, any function
-    $d:\mathcal X\to\mathcal A'$. Now $\mathcal A'$ is not binary anymore, so
-    there are uncountably many possible decision rules.
-
-    In fact, each decision rule $(\delta_0, \delta_1)$ can be mapped to the
-    square $[0,1]\times[0,1]$.
-
 * Other notes
 ** Lectures 1 & 2
    :PROPERTIES: 
