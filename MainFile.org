@@ -1,7 +1,6 @@
 #+TITLE: Fall 19: Intro to Econometrics TA material  
 #+AUTHOR: Gustavo Pereira
 #+STARTUP: beamer
-#+STARTUP: org
 
 
 * README page
@@ -36,12 +35,62 @@
         was no time to cover this in much detail so I strongly suggest you read
         BH chapter 7
         
+**** Recitation 9
+     [[file:notes/Recitation9.pdf][Here]].
+
+     We covered restricted estimation and started reviewing hypothesis tests. 
+     
+     The first part was mostly about how constraints could be used to either
+     improve estimation or perform hypothesis testing. When you know that a
+     certain relationship between parameters holds in the population, it makes
+     sense to impose that in the estimation procedure. Doing so gives rise to
+     the Constrained Least Squares (CLS) estimator. *The CLS is not guaranteed
+     to be more efficient than OLS*, except for special cases -- such as when
+     the constraint is linear and regression errors are homoskedastic.
+     
+     We rewrote the constrained least squares objective in the minimum distance
+     form. I made the point that the weighting scheme could be more general
+     different than the inverse of X'X. I tried to give some intuition about
+     general weighting matrices, but at the end of the day it's very hard to
+     interpret. Nevertheless, *minimum distance estimators are consistent and
+     asymptotically normal* when the constraint is sufficiently regular. (That
+     encompasses CLS.)
+
+     The limiting distribution of the minimum distance estimator is similar to
+     OLS, but the variance matrix is slightly more complicated. In addition to
+     the usual terms, the weighting matrix and derivative of the constraint
+     function show up. I stated, but didn't show, that there exists a weighting
+     matrix such that the associated MD estimator has the smallest variance
+     among MD estimators. Moreover, in the linear constraint case, that
+     estimator has lower variance than OLS. *Importantly, the optimal weighting
+     matrix isn't feasible.* This means that a finite sample is not enough to
+     compute it. Because of that, we need to /estimate/ it, which introduces
+     finite sample bias. Because of that, in finite samples the MD estimator
+     with optimal weighting may have a higher variance than OLS.
+     
+     Minimum distance estimation (in the sense of this chapter) can be also
+     useful for testing the hypohtesis that the constraint is true in the
+     population. Conceptually, we reject the null if
+     1) The unrestricted estimator is too far from the MD one
+     2) The constraint fails to hold ``by a large margin'' at the unrestricted
+        estimator
+     3) The minimum distance criterion is too large 
+        
+     In the hypothesis testing part, I tried to make a connection with the first
+     half. The fact that we were dealing with parametric models then made our
+     life easier. In the context of the linear projection/regression model, we
+     need to resort to asymptotics.
+
+     I focused on the case of unrestricted hypothesis testing and argued that
+     it's important to become comfortable with the concepts of asymptotic size
+     and power, and only then move to the restricted case.
+     
 *** Questions outside OH
     See [[file:outside_oh_questions.pdf][here]]!
 
       
 
-   
+    
 * Questions outside office hours
   :PROPERTIES: 
   :EXPORT_FILE_NAME: outside_oh_questions.pdf
