@@ -1376,6 +1376,27 @@
        + Therefore 
          \[ W_n = n \frac{W_n}{n} \probto +\infty \implies \mathbf P_\beta(W_n > K) \to 1\]
 **** Statistical tests: asymptotics
+     #+BEAMER: \framesubtitle{Summary}
+     #+ATTR_BEAMER: :overlay +-
+     - Testing $\text{H}_0: \beta \in B_0$ vs $\text{H}_1:\beta \in B_1$
+     - Find statistic $T_n$ and critical region $K_n$
+     - Asymptotic level requirement: 
+       \[  \lim \mathbf P_\beta(T_n  \in K_n) \leq \alpha \]
+       for all $\beta \in B_0$. Typically achieve that by finding /pivotal/ $T_n$
+     - Power: if test is level $\alpha$, and
+       \[ \lim \mathbf P_\beta(T_n \in K_n) \to 1 \]
+       for every $\beta \in B_1$, we call it /consistent/
+**** Statistical tests: application
+     #+ATTR_BEAMER: :overlay +-
+     - Consider the model \[ y_i = x_i' \beta + u_i \]
+     - Want to test $r(\beta) = \theta_0$
+     - Two approaches: 
+       + Apply delta method: 
+         \[ \sqrt{n} \left[r(\hat\beta) - r(\beta) \right] \to r'(\beta) N(0, V_\beta) \]
+       + Use the properties of restricted estimators
+         - It is often easier to solve minimization of squared residuals in the
+           restricted model
+     
 * Other notes
 ** Lectures 1 & 2
    :PROPERTIES: 
