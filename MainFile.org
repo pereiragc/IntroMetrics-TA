@@ -74,7 +74,7 @@
      1) The unrestricted estimator is too far from the MD one
      2) The constraint fails to hold ``by a large margin'' at the unrestricted
         estimator
-     3) The minimum distance criterion is too large 
+     3) The Lagrange multiplier of the constraint is large 
         
      In the hypothesis testing part, I tried to make a connection with the first
      half. The fact that we were dealing with parametric models then made our

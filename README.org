@@ -1,4 +1,4 @@
-# Created 2019-12-04 Wed 15:29
+# Created 2019-12-04 Wed 15:31
 #+TITLE: Intro to Econometrics: TA repo
 #+AUTHOR: Gustavo Pereira
 Welcome! This repository was created to store and maintain the materials
@@ -67,7 +67,7 @@ population. Conceptually, we reject the null if
 1. The unrestricted estimator is too far from the MD one
 2. The constraint fails to hold ``by a large margin'' at the unrestricted
    estimator
-3. The minimum distance criterion is too large
+3. The Lagrange multiplier of the constraint is large
 
 In the hypothesis testing part, I tried to make a connection with the first
 half. The fact that we were dealing with parametric models then made our
