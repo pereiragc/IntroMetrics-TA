@@ -1233,6 +1233,149 @@
      - Finite sample variance of $e_{n+1}$:
        \[ \expval [\hat e_{n+1}^2 | x_{n+1} ] = \sigma^2(x_{n+1}) + x_{n+1}' V_{\hat\beta} x_{n+1} \]
      - Can we build a confidence interval for the forecast?
+** Recitation 9
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: notes/Recitation9.pdf
+   :EXPORT_TITLE: Intro to Econometrics: Recitation 9
+   :EXPORT_BEAMER_THEME: Boadilla
+   :EXPORT_LATEX_CLASS_OPTIONS: [presentation, smaller]
+   :EXPORT_OPTIONS: toc:nil H:2
+   :EXPORT_LATEX_HEADER: \input{../auxfiles/header_beamer.tex}
+   :END:
+*** Intro
+**** Roadmap
+     - Overview of restricted estimation
+     #+BEAMER: \vfill
+     - Hypothesis testing
+*** Restricted estimation
+**** Restricted estimation
+     #+BEAMER:  \framesubtitle{Big picture}
+     #+ATTR_BEAMER: :overlay +-
+     - Setup: linear projection model, 
+       \[ y_i = x_i'\beta + u_i \]
+       where $\expval x_i u_i= 0$
+     - Suppose the relationship $F(\beta)=0$ holds for some $F$.
+     - Two applications: 
+       1) In the case we know $F(\beta)=0$ holds in advance, can we use this to improve our estimate of $\hat \beta$?
+       2) If we wish to /test/ whether $F(\beta) = 0$, is there something we can do?
+**** Restricted estimation
+     #+BEAMER:  \framesubtitle{Big picture}
+     #+ATTR_BEAMER: :overlay +-
+     - Consider the restricted least squares estimator,
+       \[ \tilde \beta = \arg\max_{F(\beta) = 0} (y - X\beta)'(y-X\beta) \]
+     - Comments:
+       1. By construction, $F(\tilde\beta) = 0$
+       2. Of course, in general $F(\hat\beta) \ne 0$ where $\hat\beta$ is the unrestricted solution
+     - Results: under regularity conditions, if $F(\beta)=0$ then
+       1) $\tilde \beta$ is consistent for $\beta$
+       2) $\sqrt{n}\left( \tilde \beta - \beta \right) \distto N(0, \tilde V)$
+**** Restricted estimation
+     #+BEAMER:  \framesubtitle{Big picture}
+     #+ATTR_BEAMER: :overlay +-
+     - What do we gain from all this? Questions:
+     - Is $\tilde\beta$ necessarily `better' than $\hat\beta$ under $F(\beta)=0$?
+       + *In general, no.* See sec 8.9. However, finite sample results in the homoskedastic linear
+         regression with linear constraint.
+     - Can we use this machinery to tests  hypotheses of the type $F(\beta)=0$?
+       + *Yes.* Options:
+         1. $F(\hat \beta)$ has a sufficiently bigger than zero magnitude (Wald test)
+         2. $\hat\beta$ is too far from $\tilde\beta$ (minimum distance statistic)
+         3. The Lagrange multiplier associated with $F$ is large (``score'' type test)
+**** Restricted estimation
+     #+BEAMER: \framesubtitle{Minimum distance}
+     #+ATTR_BEAMER: :overlay +-
+     - Take OLS objective, add subtract $\hat\beta$: 
+       \[ J = (y - X\beta)' (y - X\beta) = (\hat\beta - \beta)' X'X (\hat\beta - \beta) + \text{rest} \]
+       where ``rest'' doesn't depend on $\beta$
+     - CLS is the solution to a more general problem:
+       \[ \tilde \beta = \arg\min_{F(\beta) = 0} (\hat\beta - \beta)' W (\hat\beta - \beta) \]
+       with $W = X'X$.
+**** Restricted estimation
+     #+BEAMER: \framesubtitle{Minimum distance: results}
+     #+ATTR_BEAMER: :overlay +-
+     - Index $\tilde\beta(W)$ by the choice of weighting matrix
+     - Then: 
+       1. $\tilde\beta(W)$ is consistent
+       2. $\sqrt{n}(\tilde\beta(W) - \beta) \distto N(0, \tilde V_\beta(W))$
+          where the expression for $\tilde V_\beta(W)$ is very long and not very informative
+     - The following holds. For any symmetric positive definite matrix $W$,
+       \[ \tilde V_\beta(W^*) \leq \tilde V_\beta(W) \]
+       where $W^* = V_\beta^{-1}$
+     - In the case where $F$ is linear, also
+       \[ \tilde V_\beta(W^*) \leq V_\beta \]
+**** Restricted estimation
+     #+BEAMER: \framesubtitle{Minimum distance: results}
+     #+ATTR_BEAMER: :overlay +-
+     - Useful exercises: 
+       1. Make sure you can derive the expressions for constrained OLS and MD estimator
+       2. Check out the proof of efficient MD weighting
+*** Hypothesis testing
+**** Statistical tests
+     #+BEAMER: \framesubtitle{Review of first half}
+     #+ATTR_BEAMER: :overlay +-
+     - Parameter space decomposed into $B = B_0 \sqcup B_1$
+     - Action space: $\mathcal A = \{0, 1\}$ or $\mathcal A = [0, 1]$
+     - Loss function 
+       \[ \mathcal L(a, \beta) =  \ones(a = 0, \beta \in B_1) + \ones(a = 1, \beta \in B_0)  \]
+       #+BEAMER: \vspace{-0.8cm}
+     - Statistical test: let data realizations be denoted by $z \in \mathcal Z$
+       \[ \phi : \mathcal Z \to \{0, 1\} \]
+       #+BEAMER: \vspace{-0.8cm}
+     - Define $\xi(\beta) = \expval_\beta[\phi(z)]$ 
+       + For $\beta \in B_0$, $\xi(\beta)$ is rate of type I error
+
+         ``How often does your test reject a true null?''
+       + For $\beta \in B_1$, $\xi(\beta)$ is the /power/ of a test
+
+         ``how capable is your test of rejecting a false null?''
+         
+**** Statistical tests
+     #+BEAMER: \framesubtitle{Review of first half}
+     #+ATTR_BEAMER: :overlay +-
+     - In the simple null vs simple alternative case:
+       * Admissible tests maximize power subject to size
+       * Admissible tests take the LR form, i.e., reject when
+         \[ \frac{f(z, \beta_1)}{f(z, \beta_0)}  \]
+         is large
+     - Constructed LR tests in the composite case, argued that it's
+       approximately the same as Wald and Score tests
+       
+**** Statistical tests: asymptotics
+     #+ATTR_BEAMER: :overlay +-
+     - We move to the linear projection/regression model
+     - Problem: distribution of data is not fully specified $\implies$ no likelihood function
+       + E.g., linear projection model
+         \[ y_i = x_i' \beta + u_i\qquad \expval[x_i u_i] =0 \]
+         #+BEAMER: \vspace{-0.8cm}
+         
+         indexed by $\beta$; 
+     - Approach: *asympotics*
+       - We will focus on constructing tests with correct (asymptotic) size
+       - Then we will try to think about comparing tests based on some notion of power
+
+**** Statistical tests: asymptotics
+     #+BEAMER: \framesubtitle{Main example}
+     #+ATTR_BEAMER: :overlay +-
+     - In the linear projection model, 
+       \[ \sqrt{n} \left( \hat\beta - \beta \right) \distto N(0, V_\beta) \]
+     - Suppose we want to test $\text{H}_0:\beta = \beta_0$ vs $\text{H}_1:\beta \ne \beta_0$. Note that 
+       \[ \sqrt{n} \hat V_\beta^{-1/2} \left( \hat\beta - \beta \right) \distto N(0, \idmat_k) \]
+     - Thus, if the null is correct, 
+       \[ W_n = n  \left( \hat\beta - \beta_0 \right)' \hat V_\beta^{-1} \left( \hat\beta - \beta_0 \right) \distto \chi^2_k \]
+**** Statistical tests: asymptotics
+     #+BEAMER: \framesubtitle{Main example}
+     #+ATTR_BEAMER: :overlay +-
+     - Consider the following procedure. Let $K$ be a $1-\alpha$ quantile of $\chi^2_k$
+       + Reject the null if $W_n > K$
+       + Accept the null otherwise
+     - What happens if the null is correct? 
+       \[ \mathbf P_0\left(  W_n > K  \right) = 1 - F_n(K) \to 1 - F(K) = \alpha \]
+     - What happens if $\beta  \ne \beta_0$?
+       + By CMT,
+         \[ \frac{W_n}{n} =  \left( \hat\beta - \beta_0 \right)' \hat V_\beta^{-1} \left( \hat\beta - \beta_0 \right) \probto \left(\beta - \beta_0 \right)' V_\beta^{-1} \left(\beta - \beta_0 \right)\]
+       + Therefore 
+         \[ W_n = n \frac{W_n}{n} \probto +\infty \implies \mathbf P_\beta(W_n > K) \to 1\]
+**** Statistical tests: asymptotics
 * Other notes
 ** Lectures 1 & 2
    :PROPERTIES: 
