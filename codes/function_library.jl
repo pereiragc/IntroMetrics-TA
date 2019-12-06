@@ -60,7 +60,8 @@ function cap_string(symb_str, n)
     lpad(str[1:min(n, length(str))], n)
 end
 
-function prettyprint(coefs, serrs, vec_varnames, cap_strname=15)
+function prettyprint(coefs::Matrix{Float64}, serrs::Matrix{Float64},
+                     vec_varnames, cap_strname=15)
     str0 = ""
     for i in 1:size(coefs,1)
         strtmp_coef = "| "*cap_string(vec_varnames[i], cap_strname)*" | "
@@ -75,5 +76,16 @@ function prettyprint(coefs, serrs, vec_varnames, cap_strname=15)
     return str0
 end
 
+function prettyprint(coefs::Vector{Float64}, serrs::Vector{Float64}, vec_varnames, cap_strname=15)
+    n = length(coefs)
+    # Build matrices based on arrays
+    mcoefs = fill(0., (n, 1))
+    mserrs = fill(0., (n, 1))
+
+    mcoefs .= coefs
+    mserrs .= serrs
+
+    prettyprint(mcoefs, mserrs, vec_varnames, cap_strname)
+end
 " Finds standard errors from asymptotic variance matrix "
 se(avarmat, n) = sqrt.(diag(avarmat))/sqrt(n)
