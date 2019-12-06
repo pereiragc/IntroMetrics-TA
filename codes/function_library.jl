@@ -104,8 +104,8 @@ function quadratic_expand(X, labels)
     p = 1
     for i in 1:k
         for j in i:k
-            XX[:, p] .= X[:, i].*X[:, j]
-            newlabels[p] = "$(labels[i]) × $(labels[j])"
+            XX[:, p] .= X[:, j].*X[:, i]
+            newlabels[p] = "$(labels[j]) × $(labels[i])"
             p += 1
         end
     end
