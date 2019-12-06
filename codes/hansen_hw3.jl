@@ -10,9 +10,15 @@ using DataFramesMeta
 include("function_library.jl")
 
 # * Load data onto memory // housekeeping
-# Note: to run this code, point to a valid file below
-cps_df = CSV.read("data/cps09mar.txt", delim="\t", header=0)
+# Load data sets used throughout the homework.
 
+# Note: to run this code, point to valid files below
+cps_df = CSV.read("data/cps09mar.txt", delim="\t", header=0)
+invest_df = CSV.read("data/Invest1993.txt") # Has column name headers
+
+
+
+# ** CPS
 # Variables:
 varnames =  [
     "age",
@@ -29,9 +35,6 @@ varnames =  [
     "marital"
 ]
 names!(cps_df, Symbol.(varnames)) # Set names
-
-
-# Subset
 cps_q819 = @linq cps_df |> where(:hisp .== 1, :female .== 0, :race .== 1) |>
                            select(:earnings, :education, :age, :marital);
 
@@ -52,6 +55,12 @@ end;
 end
 # -------------------------------------------------------------------------------
 
+# ** Investment
+invest_q925 = @linq invest_df |> where(:year .== 1987) |>
+                           select(:year, :inva, :vala, :cfa, :debta);
+@with invest_q925 begin
+    invest_q925.intercept = fill(1, nrow(invest_q925))
+end;
 
 # * Chapter 8, Q19
 
