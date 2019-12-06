@@ -141,6 +141,67 @@ XX, mod_varnames = quadratic_expand(X, String.(vec_varnames))
 
 est_ols, resid, invXpX = ols(X, Y);
 avar_ols = hc0_avar(X, Y, resid, invXpX)
+serrs = se(avar_ols, length(Y))
+
+# T-statistic of `vala`
+tstat = est_ols[1]/serrs[1]
+
+# Wald statistic for `cfa`, `debta`
+n = length(Y)
+R = fill(0, (size(X,2), 2))
+R[2,1]=1
+R[3,2]=1
+
+# Statistic and critical value
+w = n*(R'*est_ols)'*inv(R'*avar_ols*R)*(R'*est_ols)
+crit = chisqinvcdf(2, 0.95)
+
+# Regression with linear and quadratic components
+est_ols_quad, resid_quad, invXpX_quad = ols(XX, Y);
+avar_ols_quad = hc0_avar(XX, Y, resid, invXpX_quad);
+serrs_quad = se(avar_ols_quad, length(Y));
+
+# Build restriction matrix for components 1, 2, 3, 5, 6, 8
+regressors_quadratic = [1,2,3,5,6,8]
+
+R_quad = fill(0, (size(XX,2),length(regressors_quadratic)))
+
+for (j_quad, quad_term) in enumerate(regressors_quadratic)
+    R_quad[quad_term, j_quad] = 1
+end
+
+# Statistic and critical value
+w_quad = n*(R_quad'*est_ols_quad)'*inv(R_quad'*avar_ols_quad*R_quad)*(R_quad'*est_ols_quad)
 
 # ** Report
+
+# *** Part (a)
 print(prettyprint(est_ols, se(avar_ols, length(Y)), vec_varnames))
+
+
+# *** Part (b)
+z = norminvcdf(0.975)
+for i in eachindex(est_ols)
+    coef = est_ols[i]
+    sd = serrs[i]
+
+    str_print = " | "*String(vec_varnames[i])*" | "
+    str_print *= @sprintf "[% 1.4f, % 1.4f]" (coef-z*sd) (coef+z*sd)
+    println(str_print)
+end
+
+# *** Part (c)
+println("Reject coef of cfa and debta are jointly zero if  ")
+println("wald statistic w=$w > $crit.")
+println("In the current case: reject = $(w > crit)")
+
+# *** Part (d)
+print(prettyprint(est_ols_quad, serrs_quad, quad_varnames,22))
+println("Reject quadratic coefficients are jointly zero if  ")
+println("wald statistic w=$w_quad > $crit.")
+println("In the current case: reject = $(w > crit)")
+
+
+# * Chapter 9, Q26
+
+# * Chapter 9, Q27
