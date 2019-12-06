@@ -123,3 +123,22 @@ serrs = [se(avar_ols, n) se(avar_cls, n) se(avar_md, n) se(avar_md_ptE, n)]
 
 
 print(prettyprint(coefs, serrs, vec_varnames))
+
+# * Chapter 9, Q25
+
+# From data frame to matrix -----------------------------------------------------
+vec_varnames = [:vala, #r morgulis
+                :cfa, :debta, :intercept]
+Y = log.(invest_q925[:,:inva])
+X = convert(Matrix,
+            invest_q925[:, vec_varnames])
+XX, mod_varnames = quadratic_expand(X, String.(vec_varnames))
+
+
+# -------------------------------------------------------------------------------
+
+est_ols, resid, invXpX = ols(X, Y);
+avar_ols = hc0_avar(X, Y, resid, invXpX)
+
+# ** Report
+print(prettyprint(est_ols, se(avar_ols, length(Y)), vec_varnames))
