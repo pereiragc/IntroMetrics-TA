@@ -87,5 +87,26 @@ function prettyprint(coefs::Vector{Float64}, serrs::Vector{Float64}, vec_varname
 
     prettyprint(mcoefs, mserrs, vec_varnames, cap_strname)
 end
+
 " Finds standard errors from asymptotic variance matrix "
 se(avarmat, n) = sqrt.(diag(avarmat))/sqrt(n)
+
+function quadratic_expand(X, labels)
+    k = size(X,2)
+    n = size(X, 1)
+
+    expanded_ncols = k*(k+1)÷2
+
+    XX = fill(zero(eltype(X)), (n, expanded_ncols))
+    newlabels = fill("", expanded_ncols)
+
+    p = 1
+    for i in 1:k
+        for j in i:k
+            XX[:, p] .= X[:, i].*X[:, j]
+            newlabels[p] = "$(labels[i]) × $(labels[j])"
+            p += 1
+        end
+    end
+    return XX, newlabels
+end
