@@ -111,3 +111,10 @@ function quadratic_expand(X, labels)
     end
     return XX, newlabels
 end
+
+function dataframe_to_mat(df, yname, xnames)
+    Y = df[:, yname]
+    X = convert(Matrix,
+                df[:, xnames])
+    return Y, X
+end
