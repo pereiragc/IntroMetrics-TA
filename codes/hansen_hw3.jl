@@ -3,6 +3,7 @@ using LinearAlgebra
 using StatsFuns
 import ForwardDiff
 using DataFrames
+using Printf
 using DataFramesMeta
 
 
@@ -29,8 +30,6 @@ varnames =  [
 ]
 names!(cps_df, Symbol.(varnames)) # Set names
 
-
-# * Subset and transform data
 
 # Subset
 cps_q819 = @linq cps_df |> where(:hisp .== 1, :female .== 0, :race .== 1) |>
@@ -114,4 +113,4 @@ n = length(Y)
 serrs = [se(avar_ols, n) se(avar_cls, n) se(avar_md, n) se(avar_md_ptE, n)]
 
 
-print(prettyprint(coefs, serrs))
+print(prettyprint(coefs, serrs, vec_varnames))

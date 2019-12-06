@@ -32,7 +32,7 @@ end
 Compute the minimizer of J(β) = (β̂ - β)' W (β̂ -β) subject to R'β = c. The term β̂
 above is passed as `est_ols`. Also compute the estimator of the associated
 asymptotic variance and the Lagrange multiplier associated with the constraints.
-""" 
+"""
 function md_linear(Y, X, W, R, c, est_ols, avar_ols)
     n = length(Y)
     invW = inv(W)
@@ -60,7 +60,7 @@ function cap_string(symb_str, n)
     lpad(str[1:min(n, length(str))], n)
 end
 
-function prettyprint(coefs, serrs, cap_strname=15)
+function prettyprint(coefs, serrs, vec_varnames, cap_strname=15)
     str0 = ""
     for i in 1:size(coefs,1)
         strtmp_coef = "| "*cap_string(vec_varnames[i], cap_strname)*" | "
