@@ -57,15 +57,16 @@ end
 
 function cap_string(symb_str, n)
     str = String(symb_str)
-    lpad(str[1:min(n, length(str))], n)
+    lpad(str[1:min(n, lastindex(str))], n)
 end
 
+" Build a table from column-wise stacked vectors of coefficients and matrices "
 function prettyprint(coefs::Matrix{Float64}, serrs::Matrix{Float64},
                      vec_varnames, cap_strname=15)
     str0 = ""
     for i in 1:size(coefs,1)
         strtmp_coef = "| "*cap_string(vec_varnames[i], cap_strname)*" | "
-        strtmp_se = "|                 | "
+        strtmp_se = "| "*" "^cap_strname*" | "
         for k in 1:size(coefs, 2)
             strtmp_coef *= @sprintf "  % 2.5f  |" coefs[i, k]
             strtmp_se *= @sprintf " (%2.5f)  |" serrs[i, k]
