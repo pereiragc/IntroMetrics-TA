@@ -14,8 +14,8 @@ include("function_library.jl")
 
 # Note: to run this code, point to valid files below
 cps_df = CSV.read("data/cps09mar.txt", delim="\t", header=0)
-invest_df = CSV.read("data/Invest1993.txt") # Has column name headers
-
+invest_df = CSV.read("data/Invest1993.txt")
+nerlove_q926 = CSV.read("data/Nerlove1963.txt")
 
 
 # ** CPS
@@ -61,6 +61,19 @@ invest_q925 = @linq invest_df |> where(:year .== 1987) |>
 @with invest_q925 begin
     invest_q925.intercept = fill(1, nrow(invest_q925))
 end;
+
+# ** Nerlove
+
+@with nerlove_q926 begin
+    nerlove_q926.intercept = fill(1, nrow(nerlove_q926))
+    nerlove_q926.logQ = log.(:output)
+    nerlove_q926.logPL = log.(:Plabor)
+    nerlove_q926.logPK = log.(:Pcapital)
+    nerlove_q926.logPF = log.(:Pfuel)
+end
+
+
+
 
 # * Chapter 8, Q19
 
