@@ -86,8 +86,6 @@ X = convert(Matrix,
             cps_q819[:, vec_varnames])
 # -------------------------------------------------------------------------------
 
-
-
 # ** OLS
 # Save ols estimator, residuals and X'X inverse
 est_ols, resid, invXpX = ols(X, Y);
@@ -112,10 +110,6 @@ est_cls, lm_cls, avar_cls = md_linear(Y, X, W, R, c, est_ols, avar_ols)
 W = inv(avar_ols)
 est_md, lm, avar_md = md_linear(Y, X, W, R, c, est_ols, avar_ols)
 
-
-
-
-
 # ** Inequality constraint
 # Solve the problem with the extra constraint β₂ = β₃
 S = fill(0, (size(X,2), n_constraints + 1));
@@ -125,15 +119,10 @@ S[3,3] = 1
 
 est_md_ptE, lm_1, avar_md_1 = md_linear(Y, X, W, S, fill(0, n_constraints + 1), est_ols, avar_ols)
 
-
 # ** Report
-
-coefs = [est_ols est_cls est_md est_md_ptE]
-
-
 n = length(Y)
+coefs = [est_ols est_cls est_md est_md_ptE]
 serrs = [se(avar_ols, n) se(avar_cls, n) se(avar_md, n) se(avar_md_ptE, n)]
-
 
 print(prettyprint(coefs, serrs, vec_varnames))
 
