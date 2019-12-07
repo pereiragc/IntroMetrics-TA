@@ -10,7 +10,6 @@ using DataFramesMeta
 include("function_library.jl")
 
 # * Load data onto memory // housekeeping
-# Load data sets used throughout the homework.
 
 # Note: to run this code, point to valid files below
 cps_df = CSV.read("data/cps09mar.txt", delim="\t", header=0)
@@ -41,6 +40,7 @@ cps_q819 = @linq cps_df |> where(:hisp .== 1, :female .== 0, :race .== 1) |>
 # Add necessary columns ---------------------------------------------------------
 @with cps_q819 begin
     cps_q819.intercept = fill(1, nrow(cps_q819))
+    cps_q819.logwage = log.(:earnings)
     cps_q819.experience = max.(:age - :education .- 6, 0)
     cps_q819.married1 = :marital .== 1
     cps_q819.married2 = :marital .== 2
@@ -81,18 +81,11 @@ end
 vec_varnames = [:education, :experience, :experiencesq_scale, :married1,
             :married2, :married3, :widowed, :divorced,
             :separated, :intercept]
-Y = log.(cps_q819[:, :earnings])
-X = convert(Matrix,
-            cps_q819[:, vec_varnames])
+Y, X = dataframe_to_mat(cps_q819, :logwage, vec_varnames)
 # -------------------------------------------------------------------------------
 
 # ** OLS
-# Save ols estimator, residuals and X'X inverse
-est_ols, resid, invXpX = ols(X, Y);
-est_ols
-
-# Asymptotic variance
-avar_ols = hc0_avar(X, Y, resid, invXpX)
+est_ols,resid,serrs,avar_ols,invXpX = estimate(Y, X, OLS);
 
 # ** CLS
 W = X'X/length(Y)
@@ -100,8 +93,8 @@ W = X'X/length(Y)
 # Constrained least squares (b)
 n_constraints = 2;
 R = fill(0, (size(X, 2), n_constraints));
-R[4,1] = 1; R[7,1] = -1;
-R[8,2] = 1; R[9,2] = -1;
+R[4,1] = 1; R[7,1] = -1; # First constraint
+R[8,2] = 1; R[9,2] = -1; # Second constraint
 
 c = fill(0, n_constraints)
 est_cls, lm_cls, avar_cls = md_linear(Y, X, W, R, c, est_ols, avar_ols)
@@ -128,55 +121,38 @@ print(prettyprint(coefs, serrs, vec_varnames))
 
 # * Chapter 9, Q25
 
-# From data frame to matrix -----------------------------------------------------
 vec_varnames = [:vala, #r morgulis
                 :cfa, :debta, :intercept]
-Y = log.(invest_q925[:,:inva])
-X = convert(Matrix,
-            invest_q925[:, vec_varnames])
-XX, mod_varnames = quadratic_expand(X, String.(vec_varnames))
+Y, X = dataframe_to_mat(invest_q925, :inva, vec_varnames)
+
+# Construct quadratic regressors
+XX, quad_varnames = quadratic_expand(X, String.(vec_varnames))
 
 
-# -------------------------------------------------------------------------------
+est_ols,resid,serrs,avar_ols,invXpX = estimate(Y, X, OLS);
+tstat = est_ols[1]/serrs[1]  # T-statistic of `vala`
 
-est_ols, resid, invXpX = ols(X, Y);
-avar_ols = hc0_avar(X, Y, resid, invXpX)
-serrs = se(avar_ols, length(Y))
-
-# T-statistic of `vala`
-tstat = est_ols[1]/serrs[1]
-
-# Wald statistic for `cfa`, `debta`
-n = length(Y)
+# Build restriction matrix for part (c)
 R = fill(0, (size(X,2), 2))
 R[2,1]=1
 R[3,2]=1
+w = wald_stat(R, R'*zero(est_ols), est_ols, avar_ols, length(Y))
 
-# Statistic and critical value
-w = n*(R'*est_ols)'*inv(R'*avar_ols*R)*(R'*est_ols)
-crit = chisqinvcdf(2, 0.95)
+# Quadratic components (part e)
+est_ols_quad,resid_quad,serrs_quad, avar_ols_quad,invXpX_quad=estimate(Y, XX, OLS);
 
-# Regression with linear and quadratic components
-est_ols_quad, resid_quad, invXpX_quad = ols(XX, Y);
-avar_ols_quad = hc0_avar(XX, Y, resid, invXpX_quad);
-serrs_quad = se(avar_ols_quad, length(Y));
-
-# Build restriction matrix for components 1, 2, 3, 5, 6, 8
-regressors_quadratic = [1,2,3,5,6,8]
-
+# Build restriction matrix (part e)
+regressors_quadratic = [1,2,3,5,6,8] # which regressors are qudratic?
 R_quad = fill(0, (size(XX,2),length(regressors_quadratic)))
-
 for (j_quad, quad_term) in enumerate(regressors_quadratic)
     R_quad[quad_term, j_quad] = 1
 end
 
-# Statistic and critical value
-w_quad = n*(R_quad'*est_ols_quad)'*inv(R_quad'*avar_ols_quad*R_quad)*(R_quad'*est_ols_quad)
+w_quad = wald_stat(R_quad, R_quad'*zero(est_ols_quad), est_ols_quad,
+                   avar_ols_quad, length(Y))
+
 
 # ** Report
-
-# *** Part (a)
-print(prettyprint(est_ols, se(avar_ols, length(Y)), vec_varnames))
 
 
 # *** Part (b)
