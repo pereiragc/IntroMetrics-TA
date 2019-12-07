@@ -66,6 +66,7 @@ end;
 
 @with nerlove_q926 begin
     nerlove_q926.intercept = fill(1, nrow(nerlove_q926))
+    nerlove_q926.logC = log.(:Cost)
     nerlove_q926.logQ = log.(:output)
     nerlove_q926.logPL = log.(:Plabor)
     nerlove_q926.logPK = log.(:Pcapital)
@@ -167,6 +168,7 @@ for i in eachindex(est_ols)
 end
 
 # *** Part (c)
+crit = chisqinvcdf(2, 0.95)
 println("Reject coef of cfa and debta are jointly zero if  ")
 println("wald statistic w=$w > $crit.")
 println("In the current case: reject = $(w > crit)")
@@ -179,5 +181,25 @@ println("In the current case: reject = $(w > crit)")
 
 
 # * Chapter 9, Q26
+vec_varnames = [:intercept, :logQ, :logPL, :logPK, :logPF]
+Y, X = dataframe_to_mat(nerlove_q926, :logC, vec_varnames)
+
+# ** OLS
+est_ols,resid,serrs,avar_ols,invXpX = estimate(Y, X, OLS;
+                                               varnames=vec_varnames,
+                                               print_table=true);
+# ** CLS/EMD
+R = fill(0, length(est_ols));
+R[3]=R[4]=R[5]=1;
+c=1
+
+est_cls, lm_cls, avar_cls = md_linear(Y, X, X'X, R, c, est_ols, avar_ols)
+est_md, lm_md, avar_md = md_linear(Y, X, inv(avar_ols), R, c, est_ols, avar_ols)
+
+# Wald statistic
+w = wald_stat(R, c, est_ols, avar_ols, length(Y))
+
+# Minimum distance statistic
+md = mdstat(est_md, est_ols, inv(avar_ols), length(Y))
 
 # * Chapter 9, Q27
