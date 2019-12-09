@@ -1445,7 +1445,91 @@
        + Use the properties of restricted estimators
          - It is often easier to solve minimization of squared residuals in the
            restricted model
-     
+** Recitation 10
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: notes/Recitation10.pdf
+   :EXPORT_TITLE: Intro to Econometrics: Recitation 10
+   :EXPORT_BEAMER_THEME: Boadilla
+   :EXPORT_LATEX_CLASS_OPTIONS: [presentation, smaller]
+   :EXPORT_OPTIONS: toc:nil H:2
+   :EXPORT_LATEX_HEADER: \input{../auxfiles/header_beamer.tex}
+   :END:
+*** Intro
+**** This recitation
+     - This recitation is about *boostrapping*; based on Christoph Rothe's lecture notes
+     - Also our last meeting: if you haven't done so already, please submit a
+       course evaluation
+*** Bootstrap
+**** Notation
+     #+ATTR_BEAMER: :overlay +-
+     - Sample $\{x_1, \ldots, x_n\}$ drawn iid from an unknown CDF $F_0 \in \mathcal F$
+     - Statistic: $T_n = T_n(x_1, \ldots, x_n; F_0)$
+       - For example: 
+         \[ T_n = \sqrt{n}\left( \frac{\bar x_n - \int xdF_0(x)}{\hat \sigma} \right)\]
+     - We're interested in the CDF of $T_n$. We call it $G_n$: 
+       \[ G_n(u, F_0) = \mathbf P_{F_0}(T_n \leq u) \] 
+     - The statistic is /pivotal/ if $G_n(u, F)$ does not depend on $F \in \mathcal F$
+       + Our example $T_n$ above is pivotal if $\mathcal F$ is the set of normal distributions (why?)
+       + Note that as $F$ changes, the subtracted term $\int x dF$ changes
+**** Usual asymptotics
+     #+ATTR_BEAMER: :overlay +-
+     - The usual way of conducting inference: 
+       \[ G_\infty(u, F_0) = \lim_{n\to\infty} G_n(u, F_0) \]
+       - Typically $G_\infty$ will be a normal distribution
+       - Find a consistent estimator $F_n$ of $F_0$ (e.g., the empirical CDF)
+       - Make the approximation: 
+         \[ G_n(u, F_0) \approx G_\infty(u, F_n) \]
+         #+BEAMER: \vspace{-0.5cm}
+     - Example. Let $\mathcal F$ collect distributions with finite second moment
+       + Suppose $T_n(\mathbf x, F_0) = \sqrt{n}(\bar x_n - \int x dF_0(x))$
+       + Then $G_\infty(u, F_0)$ is the CDF of $N(0, \sigma_0^2)$
+       + Procedure: inference based on $G_\infty(u, F_n)$; this means $N(0, \hat\sigma^2)$
+**** Bootstrap inference
+     - Bootstrap inference: instead of $G_\infty(u, F_n)$, use $G_n^*(u) := G_n(u, F_n)$.
+       - In our $T_n$ example,
+         \[ G_n(u, F_n) = \mathbf P_{F_n}\left\{ \sqrt{n}(\bar x_n^* - \bar x_n) \leq u \right\} \]
+       - Here $\bar x_n = \int x dF_n(x)$ and $x_i^*$ are drawn iid from $F_n$
+       - Note: *the distribution of $\bar x_n^*$ is known (given $F_n$)*
+       - We use computational methods because the distribution is often not tractable
+**** Estimating $F_n$ 
+     #+ATTR_BEAMER: :overlay +-
+     - Possibilities: 
+       + Empirical CDF
+       + Parametric bootstrap (if we make parametric assumptions on $\mathcal F$)
+       + Wild bootstrap (in the linear regression context)
+**** Algorithm
+     #+ATTR_BEAMER: :overlay +-
+     - For $b \in \{1,2,\ldots, B\}$, do:
+       + Draw sample $\{x_{1,b}^*, \ldots, x_{n,b}^*\}$ from $F_n$
+       + compute $T_{n,b}^*=T_{n}(\mathbf x_b^*; F_n)$
+     - Approximate 
+       \[  G_n^*(u) \approx \frac{1}{B}  \sum_{b=1}^B \mathbf 1(T^*_{n,b} \leq u) \]
+**** Applications
+     #+ATTR_BEAMER: :overlay +-
+     1) Variance estimation: 
+        + Idea: suppose variance of $\hat \theta_n = \theta(F_n)$ is hard to compute
+        + Adapt algorithm above to estimate
+          \[ V_n^* = \mathbf E^*\left[\left( {\hat\theta}_n^* - \mathbf E^*({\hat\theta}_n^*) \right)^2\right] \]
+          * If approximation of $F_n$ is empirical distribution, this is simply
+            average variance from bootstrap samples
+**** Applications
+     #+ATTR_BEAMER: :overlay +-
+     2) [@2] Confidence intervals/hypothesis testing
+        - Interested in population parameter $\theta_0 = \theta(F_0)$, have estimator $\hat\theta = \theta(F_n)$
+        - Want to conduct two sided test of $\text{H}_0: \theta = \theta_0$
+        - Procedure: 
+          + Construct the test statistic 
+            \[ T_n = \frac{\hat\theta - \theta_0}{\text{se}(\hat\theta)} \]
+          + Get the bootstrap approximation $G_n^*(u)$ of CDF of $T_n$
+          + One possibility is to have rule that rejects when 
+            \[ T_n > {G_n^*}^{-1}(1 - \alpha/2) \text{ or } T_n < {G_n^*}^{-1}(\alpha/2) \]
+           (aka equal-tailed testing)
+        - Q: why not construct $H_n^*(t)$ for $\tilde T_n = \hat\theta$, and reject based on
+          \[ \tilde T_n > {H_n^*}^{-1}(1-\alpha/2) \text{ or } \tilde T_n < {H_n^*}^{-1}(\alpha/2) \;?\]
+**** Bootstrap consistency
+     - Bootstrap is consistent if $G_n^*(u)$ is uniformly consistent for $G_\infty(u, F_0)$.
+     - That is, for any $F_0 \in \mathcal F$ and $\epsilon > 0$: 
+       \[ \lim_{n\to\infty} \mathbf P\left( \sup_u |G_n^*(u) - G_\infty(u,F_0)| > \epsilon \right) = 0 \]
 * Other notes
 ** Lectures 1 & 2
    :PROPERTIES: 
