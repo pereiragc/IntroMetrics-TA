@@ -55,6 +55,69 @@ function md_linear(Y, X, W, R, c, est_ols, avar_ols)
 end
 
 
+
+" Finds standard errors from asymptotic variance matrix "
+se(avarmat, n) = sqrt.(diag(avarmat))/sqrt(n)
+
+function quadratic_expand(X, labels)
+    k = size(X,2)
+    n = size(X, 1)
+
+    expanded_ncols = k*(k+1)÷2
+
+    XX = fill(zero(eltype(X)), (n, expanded_ncols))
+    newlabels = fill("", expanded_ncols)
+
+    p = 1
+    for i in 1:k
+        for j in i:k
+            XX[:, p] .= X[:, j].*X[:, i]
+            newlabels[p] = "$(labels[j]) × $(labels[i])"
+            p += 1
+        end
+    end
+    return XX, newlabels
+end
+
+struct OLS end
+struct CLS end
+struct MD end
+
+function estimate(Y, X, ::Type{OLS}; varnames=nothing, print_table=false)
+    est_ols, resid, invXpX = ols(X, Y);
+
+    avar_ols = hc0_avar(X, Y, resid, invXpX)
+    serrs = se(avar_ols, length(Y))
+
+    if print_table
+        isnothing(vec_varnames) &&
+            error("In order to print a table you need to supply `vec_varnames`")
+
+        print(prettyprint(est_ols, serrs,vec_varnames))
+    end
+
+    est_ols, resid, serrs, avar_ols, invXpX
+end
+
+mdstat(b0, bols, W, n) = n*(b0 - bols)'*W*(b0 - bols)
+
+
+" Wald statistic from linear constraint R'β = c"
+function wald_stat(R, c, vec_coef, V, n)
+    diff_theta = (R'*vec_coef-c)
+    meat=inv(R'*V*R)
+    n*diff_theta'*meat*diff_theta
+end
+
+
+
+
+
+
+# -----------------        NON-STATISTICAL FUNCTIONS       ----------------------
+
+
+" Helper function for shortening or padding strings "
 function cap_string(symb_str, n)
     str = String(symb_str)
     lpad(str[1:min(n, lastindex(str))], n)
@@ -89,63 +152,12 @@ function prettyprint(coefs::Vector{Float64}, serrs::Vector{Float64}, vec_varname
     prettyprint(mcoefs, mserrs, vec_varnames, cap_strname)
 end
 
-" Finds standard errors from asymptotic variance matrix "
-se(avarmat, n) = sqrt.(diag(avarmat))/sqrt(n)
-
-function quadratic_expand(X, labels)
-    k = size(X,2)
-    n = size(X, 1)
-
-    expanded_ncols = k*(k+1)÷2
-
-    XX = fill(zero(eltype(X)), (n, expanded_ncols))
-    newlabels = fill("", expanded_ncols)
-
-    p = 1
-    for i in 1:k
-        for j in i:k
-            XX[:, p] .= X[:, j].*X[:, i]
-            newlabels[p] = "$(labels[j]) × $(labels[i])"
-            p += 1
-        end
-    end
-    return XX, newlabels
-end
 
 function dataframe_to_mat(df, yname, xnames)
+    # Force non-missing
+
     Y = df[:, yname]
     X = convert(Matrix,
                 df[:, xnames])
     return Y, X
-end
-
-
-struct OLS end
-struct CLS end
-struct MD end
-
-function estimate(Y, X, ::Type{OLS}; varnames=nothing, print_table=false)
-    est_ols, resid, invXpX = ols(X, Y);
-
-    avar_ols = hc0_avar(X, Y, resid, invXpX)
-    serrs = se(avar_ols, length(Y))
-
-    if print_table
-        isnothing(vec_varnames) &&
-            error("In order to print a table you need to supply `vec_varnames`")
-
-        print(prettyprint(est_ols, serrs,vec_varnames))
-    end
-
-    est_ols, resid, serrs, avar_ols, invXpX
-end
-
-mdstat(b0, bols, W, n) = n*(b0 - bols)'*W*(b0 - bols)
-
-
-" Wald statistic from linear constraint R'β = c"
-function wald_stat(R, c, vec_coef, V, n)
-    diff_theta = (R'*vec_coef-c)
-    meat=inv(R'*V*R)
-    n*diff_theta'*meat*diff_theta
 end
