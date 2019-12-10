@@ -15,6 +15,7 @@ include("function_library.jl")
 cps_df = CSV.read("data/cps09mar.txt", delim="\t", header=0)
 invest_df = CSV.read("data/Invest1993.txt")
 nerlove_q926 = CSV.read("data/Nerlove1963.txt")
+mrw_df = CSV.read("data/MRW1992.txt", missingstring="NA", copycols=true)
 
 
 # ** CPS
@@ -73,6 +74,21 @@ end;
     nerlove_q926.logPF = log.(:Pfuel)
 end
 
+# ** Mankiw, Romer and Weil
+
+mrw_q927 = @linq mrw_df |> where(:N .== 1) |>
+    select(:Y85, :Y60, :invest, :pop_growth, :school)
+dropmissing!(mrw_q927)
+
+
+@with mrw_q927 begin
+    mrw_q927.intercept = fill(1, nrow(mrw_q927))
+    mrw_q927.logdY = log.(:Y85) - log.(:Y60)
+    mrw_q927.logY60 = log.(:Y60)
+    mrw_q927.log_investY = log.(:invest/100)
+    mrw_q927.log_ngdelta = log.(:pop_growth/100 .+ 0.05)
+    mrw_q927.log_school = log.(:school/100)
+end
 
 
 
@@ -202,4 +218,20 @@ w = wald_stat(R, c, est_ols, avar_ols, length(Y))
 # Minimum distance statistic
 md = mdstat(est_md, est_ols, inv(avar_ols), length(Y))
 
+# ** Report
+print(prettyprint(est_cls, se(avar_cls, length(Y)), vec_varnames))
+print(prettyprint(est_md, se(avar_md, length(Y)), vec_varnames))
+
+
+
+
 # * Chapter 9, Q27
+vec_varnames = [:logY60, :log_investY, :log_ngdelta, :log_school, :intercept]
+Y, X = dataframe_to_mat(mrw_q927, :logdY, vec_varnames)
+
+# ** Unrestricted estimation
+est_ols,resid,serrs,avar_ols,invXpX = estimate(Y, X, OLS, varnames=vec_varnames,
+                                               print_table=true)
+
+R = [0; 1; 1; 1; 0];
+w = wald_stat(R, 0, est_ols, avar_ols, length(Y))
